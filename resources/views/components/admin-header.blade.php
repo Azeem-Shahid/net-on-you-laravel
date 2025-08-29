@@ -40,18 +40,18 @@
                              class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                             <a href="{{ route('admin.dashboard') }}" 
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                Dashboard
+                                {{ t('dashboard', [], 'admin') }}
                             </a>
                             <a href="{{ route('admin.settings.index') }}" 
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                Settings
+                                {{ t('settings', [], 'admin') }}
                             </a>
                             <hr class="my-1">
                             <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
                                 <button type="submit" 
                                         class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                    Logout
+                                    {{ t('logout', [], 'admin') }}
                                 </button>
                             </form>
                         </div>
@@ -59,7 +59,7 @@
                 @else
                     <a href="{{ route('admin.login') }}" 
                        class="text-sm font-medium text-gray-700 hover:text-primary">
-                        Admin Login
+                        {{ t('admin_login', [], 'admin') }}
                     </a>
                 @endauth
             </div>
