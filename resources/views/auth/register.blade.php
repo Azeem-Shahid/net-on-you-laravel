@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Register')
 
@@ -30,7 +30,7 @@
                         {{ t('full_name', [], 'auth') }}
                     </label>
                     <input id="name" name="name" type="text" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_full_name', [], 'auth') }}"
                            value="{{ old('name') }}">
                 </div>
@@ -41,7 +41,7 @@
                         {{ t('email', [], 'common') }}
                     </label>
                     <input id="email" name="email" type="email" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_email', [], 'auth') }}"
                            value="{{ old('email') }}">
                 </div>
@@ -52,7 +52,7 @@
                         {{ t('password', [], 'auth') }}
                     </label>
                     <input id="password" name="password" type="password" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_password', [], 'auth') }}">
                 </div>
 
@@ -62,7 +62,7 @@
                         {{ t('confirm_password', [], 'auth') }}
                     </label>
                     <input id="password_confirmation" name="password_confirmation" type="password" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('confirm_password_placeholder', [], 'auth') }}">
                 </div>
 
@@ -72,7 +72,7 @@
                         {{ t('wallet_address', [], 'dashboard') }} ({{ t('optional', [], 'common') }})
                     </label>
                     <input id="wallet_address" name="wallet_address" type="text" 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_wallet_address', [], 'auth') }}"
                            value="{{ old('wallet_address') }}">
                 </div>
@@ -83,7 +83,7 @@
                         {{ t('referrer_id', [], 'auth') }} ({{ t('optional', [], 'common') }})
                     </label>
                     <input id="referrer_id" name="referrer_id" type="text" 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_referrer_id', [], 'auth') }}"
                            value="{{ old('referrer_id') ?? request('ref') }}">
                     @if(request('ref'))

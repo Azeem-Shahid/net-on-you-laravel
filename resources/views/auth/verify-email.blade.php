@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Verify Email')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-primary">
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-action/20">
@@ -17,14 +17,14 @@
             <p class="mt-2 text-sm text-white/80">
                 Before proceeding, please check your email for a verification link.
             </p>
-        </div>
+                    </div>
 
-        <!-- Custom Language Widget -->
-        <div class="flex justify-center">
-            @include('components.custom-language-widget')
-        </div>
+            <!-- Custom Language Widget -->
+            <div class="flex justify-center">
+                @include('components.custom-language-widget')
+            </div>
 
-        <div class="bg-primary/50 border border-action/30 rounded-lg p-6">
+        <div class="bg-primary border border-action/30 rounded-lg p-6">
             <p class="text-white text-sm text-center">
                 We've sent a verification link to <strong>{{ auth()->user()->email }}</strong>
             </p>

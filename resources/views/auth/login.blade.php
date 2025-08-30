@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Login')
 
@@ -15,6 +15,11 @@
                 </p>
             </div>
 
+            <!-- Custom Language Widget -->
+            <div class="flex justify-center">
+                @include('components.custom-language-widget')
+            </div>
+
         <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
             @csrf
             
@@ -25,7 +30,7 @@
                         {{ t('email', [], 'common') }}
                     </label>
                     <input id="email" name="email" type="email" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_email', [], 'auth') }}"
                            value="{{ old('email') }}">
                 </div>
@@ -36,7 +41,7 @@
                         {{ t('password', [], 'common') }}
                     </label>
                     <input id="password" name="password" type="password" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_password', [], 'auth') }}">
                 </div>
 
@@ -44,7 +49,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input id="remember" name="remember" type="checkbox" 
-                               class="h-4 w-4 text-action focus:ring-action border-action/30 rounded bg-primary/50">
+                               class="h-4 w-4 text-action focus:ring-action border-action/30 rounded bg-primary checked:bg-action">
                         <label for="remember" class="ml-2 block text-sm text-white">
                             {{ t('remember_me', [], 'auth') }}
                         </label>

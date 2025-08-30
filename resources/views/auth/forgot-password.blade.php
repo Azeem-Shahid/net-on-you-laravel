@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Forgot Password')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-primary">
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">
             <h2 class="text-3xl font-bold text-action">
@@ -12,12 +12,12 @@
             <p class="mt-2 text-sm text-white/80">
                 Enter your email address and we'll send you a password reset link
             </p>
-        </div>
+                    </div>
 
-        <!-- Custom Language Widget -->
-        <div class="flex justify-center">
-            @include('components.custom-language-widget')
-        </div>
+            <!-- Custom Language Widget -->
+            <div class="flex justify-center">
+                @include('components.custom-language-widget')
+            </div>
 
         @if (session('status'))
             <div class="bg-action/20 border border-action/30 rounded-lg p-4">
@@ -35,7 +35,7 @@
                     Email Address
                 </label>
                 <input id="email" name="email" type="email" required 
-                       class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                       class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                        placeholder="Enter your email address"
                        value="{{ old('email') }}">
             </div>

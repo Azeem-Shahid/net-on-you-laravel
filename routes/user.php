@@ -18,13 +18,13 @@ use Illuminate\Http\Request;
 |
 */
 
-// Public routes
+// Public routes - Redirect to login for unauthenticated users
 Route::get('/', function () {
-    return view('pages.home');
+    return redirect()->route('login');
 })->name('home');
 
 Route::get('/home', function () {
-    return view('pages.home');
+    return redirect()->route('login');
 })->name('home');
 
 // Language switching (public route)
