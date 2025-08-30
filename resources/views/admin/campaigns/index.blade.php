@@ -4,11 +4,11 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">Email Campaigns</h1>
-                <a href="{{ route('admin.campaigns.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
                     <i class="fas fa-plus"></i> Create Campaign
                 </a>
             </div>
@@ -17,7 +17,7 @@
             <div class="row mb-4">
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card bg-info text-white">
-                        <div class="card-body">
+                        <div class="p-6">
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="mb-0" id="totalUsers">-</h4>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card bg-success text-white">
-                        <div class="card-body">
+                        <div class="p-6">
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="mb-0" id="marketingOptIn">-</h4>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card bg-warning text-white">
-                        <div class="card-body">
+                        <div class="p-6">
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="mb-0" id="marketingOptOut">-</h4>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3 col-sm-6 mb-3">
                     <div class="card bg-secondary text-white">
-                        <div class="card-body">
+                        <div class="p-6">
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h4 class="mb-0" id="noPreference">-</h4>
@@ -70,13 +70,13 @@
             </div>
 
             <!-- Recent Campaign Activity -->
-            <div class="card">
+            <div class="bg-white rounded-lg shadow-md">
                 <div class="card-header">
                     <h5 class="mb-0">Recent Campaign Activity</h5>
                 </div>
-                <div class="card-body">
+                <div class="p-6">
                     @if($recentBulkEmails->count() > 0)
-                        <div class="table-responsive">
+                        <div class="overflow-x-auto">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -90,15 +90,15 @@
                                     @foreach($recentBulkEmails as $activity)
                                         <tr>
                                             <td>
-                                                <span class="badge bg-primary">{{ $activity->template_name }}</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary text-white">{{ $activity->template_name }}</span>
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($activity->created_at)->format('M d, Y H:i') }}</td>
                                             <td>
-                                                <span class="badge bg-success">{{ $activity->count }}</span>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ $activity->count }}</span>
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.email-logs.index', ['template' => $activity->template_name]) }}" 
-                                                   class="btn btn-sm btn-outline-primary">
+                                                   class="inline-flex items-center px-2 py-1 bg-transparent border border-action text-action text-sm font-medium rounded hover:bg-action hover:text-primary transition-colors">
                                                     <i class="fas fa-eye"></i> View Logs
                                                 </a>
                                             </td>
@@ -118,8 +118,8 @@
                         <div class="text-center py-5">
                             <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
                             <h4>No Campaign Activity Yet</h4>
-                            <p class="text-muted">Create your first email campaign to get started.</p>
-                            <a href="{{ route('admin.campaigns.create') }}" class="btn btn-primary">
+                            <p class="text-gray-500">Create your first email campaign to get started.</p>
+                            <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
                                 <i class="fas fa-plus"></i> Create Campaign
                             </a>
                         </div>
@@ -132,15 +132,15 @@
                 <div class="card-header">
                     <h5 class="mb-0">Quick Campaign Actions</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row">
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         <div class="col-md-6 mb-3">
                             <div class="card border-primary">
                                 <div class="card-body text-center">
                                     <i class="fas fa-envelope-open-text fa-2x text-primary mb-3"></i>
                                     <h5>Welcome Series</h5>
-                                    <p class="text-muted">Send welcome emails to new users</p>
-                                    <a href="{{ route('admin.campaigns.create') }}?type=welcome" class="btn btn-primary">
+                                    <p class="text-gray-500">Send welcome emails to new users</p>
+                                    <a href="{{ route('admin.campaigns.create') }}?type=welcome" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
                                         Create Welcome Campaign
                                     </a>
                                 </div>
@@ -151,8 +151,8 @@
                                 <div class="card-body text-center">
                                     <i class="fas fa-bullhorn fa-2x text-success mb-3"></i>
                                     <h5>Newsletter</h5>
-                                    <p class="text-muted">Send updates and announcements</p>
-                                    <a href="{{ route('admin.campaigns.create') }}?type=newsletter" class="btn btn-success">
+                                    <p class="text-gray-500">Send updates and announcements</p>
+                                    <a href="{{ route('admin.campaigns.create') }}?type=newsletter" class="inline-flex items-center px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors">
                                         Create Newsletter
                                     </a>
                                 </div>
@@ -167,7 +167,7 @@
                 <div class="card-header">
                     <h5 class="mb-0">User Language Distribution</h5>
                 </div>
-                <div class="card-body">
+                <div class="p-6">
                     <div id="languageChart" style="height: 300px;"></div>
                 </div>
             </div>

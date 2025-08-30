@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Language;
-use App\Models\Translation;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
@@ -14,51 +12,12 @@ class TranslationService
 
     /**
      * Get translation for a key in the current language
+     * Since we use GTranslate, this just returns the key for GTranslate to handle
      */
     public function get(string $key, array $replacements = [], ?string $module = null): string
     {
-        $languageCode = $this->getCurrentLanguage();
-        $cacheKey = $this->getCacheKey($languageCode, $key, $module);
-
-        // Try to get from cache first
-        $translation = Cache::get($cacheKey);
-        
-        if (!$translation) {
-            // Get from database
-            $query = Translation::where('key', $key)
-                ->where('language_code', $languageCode);
-
-            if ($module) {
-                $query->module($module);
-            }
-
-            $translation = $query->value('value');
-
-            // If not found, try default language
-            if (!$translation) {
-                $defaultLanguage = Language::default()->first();
-                if ($defaultLanguage && $defaultLanguage->code !== $languageCode) {
-                    $query = Translation::where('key', $key)
-                        ->where('language_code', $defaultLanguage->code);
-
-                    if ($module) {
-                        $query->module($module);
-                    }
-
-                    $translation = $query->value('value');
-                }
-            }
-
-            // If still not found, return the key
-            if (!$translation) {
-                $translation = $key;
-            }
-
-            // Cache the result
-            Cache::put($cacheKey, $translation, self::CACHE_TTL);
-        }
-
-        // Apply replacements
+        // Apply replacements if any
+        $translation = $key;
         if (!empty($replacements)) {
             foreach ($replacements as $placeholder => $value) {
                 $translation = str_replace(":$placeholder", $value, $translation);
@@ -89,22 +48,20 @@ class TranslationService
         // Check cookie as fallback
         if (isset($_COOKIE['language'])) {
             $cookieLanguage = $_COOKIE['language'];
-            // Validate the cookie language exists
-            $language = Language::active()->where('code', $cookieLanguage)->first();
-            if ($language) {
+            // Validate the cookie language is supported
+            if (in_array($cookieLanguage, ['en', 'es'])) {
                 return $cookieLanguage;
             }
         }
 
         // Check browser language
         $browserLanguage = $this->getBrowserLanguage();
-        if ($browserLanguage) {
+        if ($browserLanguage && in_array($browserLanguage, ['en', 'es'])) {
             return $browserLanguage;
         }
 
         // Fallback to default language
-        $defaultLanguage = Language::default()->first();
-        return $defaultLanguage ? $defaultLanguage->code : 'en';
+        return 'en';
     }
 
     /**
@@ -112,9 +69,8 @@ class TranslationService
      */
     public function setLanguage(string $languageCode): void
     {
-        // Validate language exists and is active
-        $language = Language::active()->where('code', $languageCode)->first();
-        if (!$language) {
+        // Validate language is supported
+        if (!in_array($languageCode, ['en', 'es'])) {
             return;
         }
 
@@ -148,7 +104,10 @@ class TranslationService
     public function getAvailableLanguages()
     {
         return Cache::remember('available_languages', self::CACHE_TTL, function () {
-            return Language::active()->orderBy('is_default', 'desc')->orderBy('name')->get();
+            return collect([
+                ['code' => 'en', 'name' => 'English', 'is_default' => true],
+                ['code' => 'es', 'name' => 'Español', 'is_default' => false]
+            ]);
         });
     }
 
@@ -161,25 +120,12 @@ class TranslationService
         
         foreach ($browserLanguages as $browserLang) {
             $code = substr($browserLang, 0, 2);
-            $language = Language::active()->where('code', $code)->first();
-            if ($language) {
+            if (in_array($code, ['en', 'es'])) {
                 return $code;
             }
         }
 
         return null;
-    }
-
-    /**
-     * Get cache key for translation
-     */
-    private function getCacheKey(string $languageCode, string $key, ?string $module): string
-    {
-        $parts = [self::CACHE_PREFIX, $languageCode, $key];
-        if ($module) {
-            $parts[] = $module;
-        }
-        return implode(':', $parts);
     }
 
     /**
@@ -196,32 +142,5 @@ class TranslationService
     public function clearAvailableLanguagesCache(): void
     {
         Cache::forget('available_languages');
-    }
-
-    /**
-     * Clear cache for specific language
-     */
-    public function clearCacheForLanguage(string $languageCode): void
-    {
-        $keys = Cache::get('translation_keys_' . $languageCode, []);
-        foreach ($keys as $key) {
-            Cache::forget($key);
-        }
-        Cache::forget('translation_keys_' . $languageCode);
-    }
-
-    /**
-     * Get translation with fallback
-     */
-    public function getWithFallback(string $key, array $replacements = [], ?string $module = null): string
-    {
-        $translation = $this->get($key, $replacements, $module);
-        
-        // If translation is the same as key, try without module
-        if ($translation === $key && $module) {
-            $translation = $this->get($key, $replacements);
-        }
-
-        return $translation;
     }
 }

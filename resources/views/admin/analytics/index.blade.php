@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Analytics & Reports')
 
@@ -49,7 +49,6 @@
                                 <option value="">All Languages</option>
                                 <option value="en" {{ $filters['language'] === 'en' ? 'selected' : '' }}>English</option>
                                 <option value="es" {{ $filters['language'] === 'es' ? 'selected' : '' }}>Spanish</option>
-                                <option value="fr" {{ $filters['language'] === 'fr' ? 'selected' : '' }}>French</option>
                             </select>
                         </div>
                         <div>

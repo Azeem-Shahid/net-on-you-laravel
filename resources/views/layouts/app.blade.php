@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'NetOnYou') }} - @yield('title', 'Authentication') }}</title>
+    <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Net On You') }}</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS CDN for development -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js for interactive components -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -26,402 +26,249 @@
                     colors: {
                         primary: '#1d003f',
                         action: '#00ff00',
-                        error: '#ff0000'
+                        danger: '#ff0000'
                     }
                 }
             }
         }
     </script>
+    
+    <!-- Custom CSS to prevent overflow -->
+    <style>
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        
+        .container {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gradient-to-br from-primary to-[#2a0057] flex flex-col">
-        @if(auth()->check())
-        <!-- Sidebar for desktop -->
-        <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-4 border-r border-action/20">
-                <div class="flex h-16 shrink-0 items-center">
-                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-action">
-                        NetOnYou
+<body class="bg-gray-50">
+    <!-- User Navigation -->
+    <nav class="bg-primary shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 nav-container">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="{{ route('dashboard') }}" class="text-action text-xl sm:text-2xl font-bold hover:text-white transition-colors whitespace-nowrap">
+                        <i class="fas fa-home mr-2 sm:mr-3"></i>
+                        {{ config('app.name', 'Net On You') }}
                     </a>
                 </div>
-                <nav class="flex flex-1 flex-col">
-                    <ul role="list" class="flex flex-1 flex-col gap-y-7">
-                        <li>
-                            <ul role="list" class="-mx-2 space-y-1">
-                                <li>
-                                    <a href="{{ route('dashboard') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                        </svg>
-                                        {{ t('dashboard', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('magazines.index') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('magazines.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('magazines.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.967 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.967 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                        </svg>
-                                        {{ t('magazines', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('payment.history') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('payment.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('payment.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                        </svg>
-                                        {{ t('payments', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('transactions.index') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('transactions.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('transactions.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                        </svg>
-                                        {{ t('transactions', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('profile.edit') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('profile.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('profile.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                        </svg>
-                                        {{ t('profile', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('payment.checkout') }}" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('payment.checkout') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('payment.checkout') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.967 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.967 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                        </svg>
-                                        {{ t('checkout', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('dashboard') }}#referrals" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-.758l1.102-1.101a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101m-.758-.758l-1.102-1.101a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
-                                        </svg>
-                                        {{ t('referrals', [], 'common') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('dashboard') }}#commissions" class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                        <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                        </svg>
-                                        {{ t('commissions', [], 'common') }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="mt-auto">
-                            <div class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white">
-                                <div class="flex items-center gap-x-4">
-                                    <div class="w-8 h-8 bg-action rounded-full flex items-center justify-center">
-                                        <span class="text-primary font-bold text-sm">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                    </div>
-                                    <div>
-                                        <p class="text-white">{{ auth()->user()->name }}</p>
-                                        <p class="text-action/80 text-xs">{{ auth()->user()->email }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <form method="POST" action="{{ route('logout') }}" class="mt-2">
-                                @csrf
-                                <button type="submit" class="w-full text-left px-6 py-2 text-sm text-action hover:text-action/80 hover:bg-action/10 rounded-md transition-colors">
-                                    {{ t('logout', [], 'auth') }}
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="lg:pl-64 flex-1 flex flex-col">
-            <!-- Top navigation bar -->
-            <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-action/20 bg-primary px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-                <!-- Mobile menu button -->
-                <button type="button" class="-m-2.5 p-2.5 text-action lg:hidden" id="mobile-menu-button">
-                    <span class="sr-only">Open sidebar</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                    <div class="flex flex-1"></div>
-                    <div class="flex items-center gap-x-4 lg:gap-x-6">
-                        <!-- GTranslate Widget -->
-                        @include('components.custom-language-widget')
+                
+                <!-- Medium screen navigation (icons only) -->
+                <div class="hidden md:block lg:hidden">
+                    <div class="ml-6 flex items-baseline space-x-1">
+                        <a href="{{ route('dashboard') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'text-action bg-white/10' : '' }}" title="Dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </a>
+                        <a href="{{ route('magazines.index') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('magazines.*') ? 'text-action bg-white/10' : '' }}" title="Magazines">
+                            <i class="fas fa-book"></i>
+                        </a>
+                        <a href="{{ route('transactions.index') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('transactions.*') ? 'text-action bg-white/10' : '' }}" title="Transactions">
+                            <i class="fas fa-exchange-alt"></i>
+                        </a>
+                        <a href="{{ route('payment.history') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('payment.*') ? 'text-action bg-white/10' : '' }}" title="Payments">
+                            <i class="fas fa-credit-card"></i>
+                        </a>
+                        <a href="{{ route('referrals.index') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('referrals.*') ? 'text-action bg-white/10' : '' }}" title="Referrals">
+                            <i class="fas fa-users"></i>
+                        </a>
+                        <a href="{{ route('profile.edit') }}" class="text-white/80 hover:text-action p-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('profile.*') ? 'text-action bg-white/10' : '' }}" title="Profile">
+                            <i class="fas fa-user-edit"></i>
+                        </a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Page Content -->
-            <main class="flex-1 py-8">
-                @yield('content')
-            </main>
-        </div>
-
-        <!-- Mobile sidebar overlay -->
-        <div id="mobile-sidebar-overlay" 
-             class="fixed inset-0 z-50 lg:hidden bg-black bg-opacity-50 cursor-pointer hidden">
-        </div>
-
-        <!-- Mobile sidebar -->
-        <div id="mobile-sidebar" 
-             class="fixed inset-y-0 left-0 z-50 w-80 bg-primary shadow-xl lg:hidden transform -translate-x-full transition-transform duration-300 ease-in-out">
-            <div class="flex h-full flex-col">
-                <!-- Mobile sidebar header -->
-                <div class="flex h-16 shrink-0 items-center justify-between px-6 border-b border-action/20">
-                    <h1 class="text-xl font-bold text-action">NetOnYou</h1>
-                    <button type="button" class="-m-2.5 p-2.5 text-action hover:bg-action/10 rounded-md transition-colors" id="mobile-close-button">
-                        <span class="sr-only">Close sidebar</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                
+                <!-- Large screen navigation (icons + text) -->
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-2">
+                        <a href="{{ route('dashboard') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-tachometer-alt mr-1"></i>
+                            <span class="hidden xl:inline">Dashboard</span>
+                        </a>
+                        <a href="{{ route('magazines.index') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('magazines.*') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-book mr-1"></i>
+                            <span class="hidden xl:inline">Magazines</span>
+                        </a>
+                        <a href="{{ route('transactions.index') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('transactions.*') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-exchange-alt mr-1"></i>
+                            <span class="hidden xl:inline">Transactions</span>
+                        </a>
+                        <a href="{{ route('payment.history') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('payment.*') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-credit-card mr-1"></i>
+                            <span class="hidden xl:inline">Payments</span>
+                        </a>
+                        <a href="{{ route('referrals.index') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('referrals.*') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-users mr-1"></i>
+                            <span class="hidden xl:inline">Referrals</span>
+                        </a>
+                        <a href="{{ route('profile.edit') }}" class="text-white/80 hover:text-action px-2 py-2 rounded-md text-sm font-medium transition-colors {{ request()->routeIs('profile.*') ? 'text-action bg-white/10' : '' }}">
+                            <i class="fas fa-user-edit mr-1"></i>
+                            <span class="hidden xl:inline">Profile</span>
+                        </a>
+                    </div>
                 </div>
-
-                <!-- Mobile sidebar navigation -->
-                <div class="flex flex-1 flex-col gap-y-5 overflow-y-auto px-6 pb-4">
-                    <nav class="flex flex-1 flex-col">
-                        <ul role="list" class="flex flex-1 flex-col gap-y-7">
-                            <li>
-                                <ul role="list" class="-mx-2 space-y-1">
-                                    <li>
-                                        <a href="{{ route('dashboard') }}" 
-                                           class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                            </svg>
-                                            {{ t('dashboard', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('magazines.index') }}" 
-                                           class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('magazines.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('magazines.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.967 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.967 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                            </svg>
-                                            {{ t('magazines', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('payment.checkout') }}" class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('payment.checkout') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('payment.checkout') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.967 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.967 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                            </svg>
-                                            {{ t('checkout', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('dashboard') }}#referrals" class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-.758l1.102-1.101a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101m-.758-.758l-1.102-1.101a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
-                                            </svg>
-                                            {{ t('referrals', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('dashboard') }}#commissions" class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('dashboard') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('dashboard') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                            </svg>
-                                            {{ t('commissions', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('payment.history') }}" 
-                                           class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('payment.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('payment.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                            </svg>
-                                            {{ t('payments', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('transactions.index') }}" 
-                                           class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('transactions.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('transactions.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                            </svg>
-                                            {{ t('transactions', [], 'common') }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('profile.edit') }}" 
-                                           class="mobile-nav-link group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold {{ request()->routeIs('profile.*') ? 'bg-action/20 text-action' : 'text-white hover:text-action hover:bg-action/10' }}">
-                                            <svg class="h-6 w-6 shrink-0 {{ request()->routeIs('profile.*') ? 'text-action' : 'text-white group-hover:text-action' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                            </svg>
-                                            {{ t('profile', [], 'common') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="mt-auto">
-                                <div class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white border-t border-action/20">
-                                    <div class="flex items-center gap-x-4">
-                                        <div class="w-8 h-8 bg-action rounded-full flex items-center justify-center">
-                                            <span class="text-primary font-bold text-sm">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                        </div>
-                                        <div>
-                                            <p class="text-white">{{ auth()->user()->name }}</p>
-                                            <p class="text-action/80 text-xs">{{ auth()->user()->email }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6 space-x-4">
+                        <!-- Custom Language Widget -->
+                        @include('components.custom-language-widget')
+                        
+                        <div class="relative">
+                            <button class="flex items-center text-white/80 hover:text-action px-3 py-2 rounded-md text-sm font-medium transition-colors" id="userDropdown">
+                                <i class="fas fa-user mr-2"></i>
+                                {{ auth()->user()->name ?? 'User' }}
+                                <i class="fas fa-chevron-down ml-2"></i>
+                            </button>
+                            <div class="hidden absolute right-0 mt-2 w-48 bg-primary border border-action/30 rounded-lg shadow-lg z-50" id="userDropdownMenu">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-white hover:bg-action/20 rounded-t-lg transition-colors">
+                                    <i class="fas fa-user-edit mr-2"></i>Edit Profile
+                                </a>
+                                <a href="{{ route('profile.change-password') }}" class="block px-4 py-2 text-sm text-white hover:bg-action/20 transition-colors">
+                                    <i class="fas fa-key mr-2"></i>Change Password
+                                </a>
+                                <hr class="border-action/30">
+                                <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-6 py-2 text-sm text-action hover:text-action/80 hover:bg-action/10 rounded-md transition-colors">
-                                        {{ t('logout', [], 'auth') }}
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-white hover:bg-action/20 rounded-b-lg transition-colors">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
                                     </button>
                                 </form>
-                            </li>
-                        </ul>
-                    </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-white/80 hover:text-action p-2 rounded-md" id="mobileMenuButton">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        @else
-        <!-- Navigation for non-authenticated users -->
-        <nav class="bg-primary border-b border-action/20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex items-center">
-                        <a href="/" class="text-action font-bold text-xl">
-                            NetOnYou
-                        </a>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <!-- GTranslate Widget -->
-                        @include('components.gtranslate-widget')
-                        
-                        <a href="{{ route('login') }}" class="text-action hover:text-action/80 transition-colors">
-                            {{ t('login', [], 'auth') }}
-                        </a>
-                        <a href="{{ route('register') }}" class="bg-action text-primary px-4 py-2 rounded-lg font-medium hover:bg-action/80 transition-colors">
-                            {{ t('register', [], 'auth') }}
-                        </a>
-                    </div>
-                </div>
+        
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobileMenu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{{ route('dashboard') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('dashboard') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                </a>
+                <a href="{{ route('magazines.index') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('magazines.*') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-book mr-2"></i>Magazines
+                </a>
+                <a href="{{ route('transactions.index') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('transactions.*') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-exchange-alt mr-2"></i>Transactions
+                </a>
+                <a href="{{ route('payment.history') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('payment.*') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-credit-card mr-2"></i>Payments
+                </a>
+                <a href="{{ route('referrals.index') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('referrals.*') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-users mr-2"></i>Referrals
+                </a>
+                <a href="{{ route('profile.edit') }}" class="text-white/80 hover:text-action block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('profile.*') ? 'text-action bg-white/10' : '' }}">
+                    <i class="fas fa-user-edit mr-2"></i>Profile
+                </a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Page Content -->
-        <main class="flex-1 py-8">
-            @yield('content')
-        </main>
-        @endif
-
-        <!-- Flash Messages with close functionality -->
-        @if(session('success'))
-            <x-notification type="success" :message="session('success')" />
-        @endif
-
-        @if(session('error'))
-            <x-notification type="error" :message="session('error')" />
-        @endif
-
-        @if($errors->any())
-            <x-notification type="error">
-                <div>
-                    <p class="text-sm font-medium">{{ t('error', [], 'common') }}:</p>
-                    <ul class="list-disc list-inside mt-2 text-sm">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+    <!-- Main Content -->
+    <main class="min-h-screen">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 overflow-hidden">
+            <!-- Flash Messages -->
+            @if(session('success'))
+                <div class="mb-6 bg-action/20 border border-action text-action px-4 py-3 rounded-lg relative" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-action hover:text-action/80" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-            </x-notification>
-        @endif
+            @endif
 
-        <!-- Footer for App Layout - Show on all pages -->
-        <x-footer />
-    </div>
+            @if(session('error'))
+                <div class="mb-6 bg-danger/20 border border-danger text-danger px-4 py-3 rounded-lg relative" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-danger hover:text-danger/80" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            @endif
 
-    <!-- Vanilla JavaScript for sidebar functionality -->
+            @if(session('warning'))
+                <div class="mb-6 bg-yellow-500/20 border border-yellow-500 text-yellow-400 px-4 py-3 rounded-lg relative" role="alert">
+                    {{ session('warning') }}
+                    <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-yellow-400 hover:text-yellow-300" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('info'))
+                <div class="mb-6 bg-blue-500/20 border border-blue-500 text-blue-400 px-4 py-3 rounded-lg relative" role="alert">
+                    {{ session('info') }}
+                    <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-blue-400 hover:text-blue-300" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            @endif
+
+            <!-- Page Content -->
+            @yield('content')
+        </div>
+    </main>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom User Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileSidebar = document.getElementById('mobile-sidebar');
-            const mobileSidebarOverlay = document.getElementById('mobile-sidebar-overlay');
-            const mobileCloseButton = document.getElementById('mobile-close-button');
-            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        // Dropdown functionality
+        document.getElementById('userDropdown').addEventListener('click', function() {
+            const menu = document.getElementById('userDropdownMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mobile menu functionality
+        document.getElementById('mobileMenuButton').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const menu = document.getElementById('userDropdownMenu');
             
-            let isSidebarOpen = false;
-
-            // Function to open sidebar
-            function openSidebar() {
-                mobileSidebar.classList.remove('-translate-x-full');
-                mobileSidebarOverlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-                isSidebarOpen = true;
-            }
-
-            // Function to close sidebar
-            function closeSidebar() {
-                mobileSidebar.classList.add('-translate-x-full');
-                mobileSidebarOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-                isSidebarOpen = false;
-            }
-
-            // Event listeners
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', function() {
-                    if (isSidebarOpen) {
-                        closeSidebar();
-                    } else {
-                        openSidebar();
-                    }
-                });
-            }
-
-            if (mobileCloseButton) {
-                mobileCloseButton.addEventListener('click', closeSidebar);
-            }
-
-            if (mobileSidebarOverlay) {
-                mobileSidebarOverlay.addEventListener('click', closeSidebar);
-            }
-
-            // Close sidebar when clicking on navigation links
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', closeSidebar);
-            });
-
-            // Close sidebar when pressing Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isSidebarOpen) {
-                    closeSidebar();
-                }
-            });
-
-            // Close sidebar when clicking outside
-            document.addEventListener('click', function(e) {
-                if (isSidebarOpen && 
-                    !mobileSidebar.contains(e.target) && 
-                    !mobileMenuButton.contains(e.target)) {
-                    closeSidebar();
-                }
-            });
-
-            // Close sidebar on window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth >= 1024 && isSidebarOpen) {
-                    closeSidebar();
-                }
-            });
-
-            // Force close sidebar on page load for mobile
-            if (window.innerWidth < 1024) {
-                closeSidebar();
+            if (!dropdown.contains(event.target)) {
+                menu.classList.add('hidden');
             }
         });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('[role="alert"]');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s ease-out';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
     </script>
+    
+    @stack('scripts')
 </body>
 </html>

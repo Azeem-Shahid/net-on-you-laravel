@@ -1,0 +1,49 @@
+{
+  "snapshot": "POPULATED_FROM_SETTINGS",
+  "install": "composer install && cp .env.example .env && php artisan key:generate && php artisan migrate --force && npm install && npm run build",
+  "terminals": [
+    {
+      "name": "MySQL Service",
+      "command": "sudo service mysql start && sudo mysql -e \"CREATE DATABASE IF NOT EXISTS laravel_test; CREATE USER IF NOT EXISTS 'laravel'@'localhost' IDENTIFIED BY 'password'; GRANT ALL PRIVILEGES ON laravel_test.* TO 'laravel'@'localhost'; FLUSH PRIVILEGES;\""
+    },
+    {
+      "name": "Redis Service",
+      "command": "sudo service redis-server start"
+    },
+    {
+      "name": "Run Laravel",
+      "command": "php artisan serve --host=0.0.0.0 --port=8000"
+    },
+    {
+      "name": "Queue Worker",
+      "command": "php artisan queue:work --tries=3 --timeout=90"
+    },
+    {
+      "name": "Schedule Worker",
+      "command": "php artisan schedule:work"
+    }
+  ],
+  "env": {
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "127.0.0.1",
+    "DB_PORT": "3306",
+    "DB_DATABASE": "laravel_test",
+    "DB_USERNAME": "laravel",
+    "DB_PASSWORD": "password",
+    "REDIS_HOST": "127.0.0.1",
+    "REDIS_PASSWORD": null,
+    "REDIS_PORT": "6379",
+    "QUEUE_CONNECTION": "redis",
+    "CACHE_DRIVER": "redis",
+    "SESSION_DRIVER": "redis",
+    "APP_ENV": "testing",
+    "APP_DEBUG": "true"
+  },
+  "postInstall": [
+    "sudo apt-get update",
+    "sudo apt-get install -y mysql-server redis-server",
+    "sudo systemctl enable mysql",
+    "sudo systemctl enable redis-server"
+  ]
+}
+

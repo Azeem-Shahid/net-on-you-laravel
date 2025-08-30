@@ -24,7 +24,7 @@ class AdminMiddleware
                 ], 401);
             }
             
-            return redirect('/admin/login');
+            return redirect()->route('admin.login.form');
         }
 
         $admin = Auth::guard('admin')->user();

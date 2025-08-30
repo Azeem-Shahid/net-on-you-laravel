@@ -51,7 +51,6 @@
                                     data-setting-key="default_language">
                                 <option value="en" {{ \App\Models\Setting::getValue('default_language', 'en') == 'en' ? 'selected' : '' }}>English</option>
                                 <option value="es" {{ \App\Models\Setting::getValue('default_language', 'en') == 'es' ? 'selected' : '' }}>Spanish</option>
-                                <option value="fr" {{ \App\Models\Setting::getValue('default_language', 'en') == 'fr' ? 'selected' : '' }}>French</option>
                             </select>
                             <p class="mt-1 text-xs text-gray-500">Default language for new users</p>
                         </div>

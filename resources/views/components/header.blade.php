@@ -11,7 +11,7 @@
             <!-- Right side - GTranslate Widget and User Menu -->
             <div class="flex items-center space-x-4">
                 <!-- GTranslate Widget -->
-                @include('components.gtranslate-widget')
+                @include('components.custom-language-widget')
 
                 <!-- User Menu -->
                 @auth

@@ -154,7 +154,7 @@
                             <h4 class="text-sm font-medium text-blue-900 mb-2">{{ t('subscription', [], 'common') }}</h4>
                             <p class="text-sm text-blue-700">
                                 {{ t('subscription_active_until', [], 'common') }}: 
-                                {{ $transaction->subscription->expires_at ? $transaction->subscription->expires_at->format('F d, Y') : t('no_expiry', [], 'common') }}
+                                {{ $transaction->subscription->end_date ? $transaction->subscription->end_date->format('F d, Y') : t('no_expiry', [], 'common') }}
                             </p>
                         </div>
                     @endif

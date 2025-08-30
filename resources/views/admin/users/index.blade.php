@@ -19,9 +19,6 @@
                         </svg>
                         Create User
                     </a>
-                    <a href="{{ route('admin.users.export') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                        Export CSV
-                    </a>
                 </div>
             </div>
         </div>

@@ -166,12 +166,23 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
                                         <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-                                            <span class="text-sm font-medium text-gray-700">{{ substr($commission->user->name, 0, 1) }}</span>
+                                            <span class="text-sm font-medium text-gray-700">
+                                                @if($commission->user)
+                                                    {{ substr($commission->user->name, 0, 1) }}
+                                                @else
+                                                    ?
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $commission->user->name }}</div>
-                                        <div class="text-sm text-gray-500">{{ $commission->user->email }}</div>
+                                        @if($commission->user)
+                                            <div class="text-sm font-medium text-gray-900">{{ $commission->user->name }}</div>
+                                            <div class="text-sm text-gray-500">{{ $commission->user->email }}</div>
+                                        @else
+                                            <div class="text-sm font-medium text-gray-500">User Deleted</div>
+                                            <div class="text-sm text-gray-400">N/A</div>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

@@ -10,19 +10,22 @@ use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| User Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Here is where you can register user routes for your application.
+| These routes are completely separate from admin routes.
 |
 */
 
 // Public routes
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('pages.home');
+})->name('home');
+
+Route::get('/home', function () {
+    return view('pages.home');
+})->name('home');
 
 // Language switching (public route)
 Route::post('/language/switch', [App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
@@ -88,6 +91,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transactions', [App\Http\Controllers\TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/{transaction}', [App\Http\Controllers\TransactionController::class, 'show'])->name('transactions.show');
     
+    // Referral Routes
+    Route::get('/referrals', [App\Http\Controllers\ReferralController::class, 'index'])->name('referrals.index');
+    Route::get('/referrals/details', [App\Http\Controllers\ReferralController::class, 'details'])->name('referrals.details');
+    
     // CoinPayments Routes
     Route::post('/payments/coinpayments/create', [PaymentController::class, 'createCoinPayments'])->name('coinpayments.create');
 });
@@ -109,5 +116,35 @@ Route::post('/payment/webhook', [PaymentController::class, 'webhook'])->name('pa
 // CoinPayments Routes
 Route::post('/payments/coinpayments/ipn', [PaymentController::class, 'coinPaymentsIPN'])->name('coinpayments.ipn');
 
+// Additional Public Routes for Footer
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');
 
-// Admin routes are now in routes/admin.php
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
+Route::get('/help', function () {
+    return view('pages.help');
+})->name('help');
+
+Route::get('/faq', function () {
+    return view('pages.faq');
+})->name('faq');
+
+Route::get('/support', function () {
+    return view('pages.support');
+})->name('support');
+
+Route::get('/terms', function () {
+    return view('pages.terms');
+})->name('terms');
+
+Route::get('/privacy', function () {
+    return view('pages.privacy');
+})->name('privacy');
+
+Route::get('/cookies', function () {
+    return view('pages.cookies');
+})->name('cookies');

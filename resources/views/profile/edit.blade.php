@@ -34,7 +34,7 @@
                     <div class="md:col-span-2">
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                         <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1d003f] focus:border-transparent">
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent">
                     </div>
 
                     <!-- Email (Read-only) -->
@@ -79,7 +79,7 @@
                     <a href="{{ route('dashboard') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors">
                         Cancel
                     </a>
-                    <button type="submit" class="bg-[#1d003f] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#2a0057] transition-colors">
+                    <button type="submit" class="bg-action text-primary px-6 py-2 rounded-lg font-medium hover:bg-action/90 transition-colors">
                         Update Profile
                     </button>
                 </div>
@@ -90,7 +90,7 @@
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold text-gray-800">Password</h2>
-                <a href="{{ route('profile.change-password') }}" class="bg-[#1d003f] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#2a0057] transition-colors">
+                <a href="{{ route('profile.change-password') }}" class="bg-action text-primary px-4 py-2 rounded-lg font-medium hover:bg-action/90 transition-colors">
                     Change Password
                 </a>
             </div>

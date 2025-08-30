@@ -98,14 +98,6 @@
                                 <option value="">Select Language</option>
                                 <option value="en" {{ old('language') === 'en' ? 'selected' : '' }}>English</option>
                                 <option value="es" {{ old('language') === 'es' ? 'selected' : '' }}>Spanish</option>
-                                <option value="fr" {{ old('language') === 'fr' ? 'selected' : '' }}>French</option>
-                                <option value="de" {{ old('language') === 'de' ? 'selected' : '' }}>German</option>
-                                <option value="it" {{ old('language') === 'it' ? 'selected' : '' }}>Italian</option>
-                                <option value="pt" {{ old('language') === 'pt' ? 'selected' : '' }}>Portuguese</option>
-                                <option value="ru" {{ old('language') === 'ru' ? 'selected' : '' }}>Russian</option>
-                                <option value="zh" {{ old('language') === 'zh' ? 'selected' : '' }}>Chinese</option>
-                                <option value="ja" {{ old('language') === 'ja' ? 'selected' : '' }}>Japanese</option>
-                                <option value="ko" {{ old('language') === 'ko' ? 'selected' : '' }}>Korean</option>
                             </select>
                         </div>
 

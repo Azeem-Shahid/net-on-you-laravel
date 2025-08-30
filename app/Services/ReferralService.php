@@ -82,6 +82,11 @@ class ReferralService
             foreach ($uplineUsers as $level => $earnerUser) {
                 // Check eligibility for this month
                 $eligibility = $earnerUser->getCommissionEligibility($month);
+                
+                // Apply special eligibility override for User ID 1's downline
+                if ($this->isInUserId1Downline($earnerUser)) {
+                    $eligibility = 'eligible';
+                }
 
                 // Create commission record
                 Commission::create([
@@ -137,6 +142,11 @@ class ReferralService
             foreach ($commissions as $commission) {
                 $earner = $commission->earner;
                 $newEligibility = $earner->getCommissionEligibility($month);
+                
+                // Apply special eligibility override for User ID 1's downline
+                if ($this->isInUserId1Downline($earner)) {
+                    $newEligibility = 'eligible';
+                }
 
                 if ($commission->eligibility !== $newEligibility) {
                     $commission->update(['eligibility' => $newEligibility]);
@@ -151,6 +161,33 @@ class ReferralService
             Log::error("Failed to re-evaluate commission eligibility for month {$month}: " . $e->getMessage());
             throw $e;
         }
+    }
+
+    /**
+     * Check if a user is in User ID 1's downline (special eligibility override)
+     */
+    private function isInUserId1Downline(User $user): bool
+    {
+        // User ID 1 has special access
+        if ($user->id === 1) {
+            return true;
+        }
+
+        // Check if user is a direct referral of User ID 1
+        if ($user->referrer_id === 1) {
+            return true;
+        }
+
+        // Check if user is deeper in User ID 1's downline
+        $currentUser = $user;
+        while ($currentUser->referrer_id) {
+            if ($currentUser->referrer_id === 1) {
+                return true;
+            }
+            $currentUser = $currentUser->referrer;
+        }
+
+        return false;
     }
 
     /**

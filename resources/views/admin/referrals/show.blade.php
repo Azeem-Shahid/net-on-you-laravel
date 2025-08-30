@@ -19,25 +19,25 @@
     </div>
 
     <!-- User Info -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-6">
+            <div class="bg-white rounded-lg shadow-md">
                 <div class="card-header">
                     <h5 class="card-title">User Information</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-6">
                             <p><strong>Name:</strong> {{ $user->name }}</p>
                             <p><strong>Email:</strong> {{ $user->email }}</p>
                             <p><strong>User ID:</strong> {{ $user->id }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="lg:col-span-6">
                             <p><strong>Referrer ID:</strong> {{ $user->referrer_id ?: 'None' }}</p>
-                            <p><strong>Joined:</strong> {{ $user->created_at->format('M d, Y') }}</p>
+                            <p><strong>Joined:</strong> {{ $user->created_at ? $user->created_at->format('M d, Y') : 'Unknown' }}</p>
                             <p><strong>Status:</strong> 
                                 <span class="badge bg-{{ $user->status === 'active' ? 'success' : 'danger' }}">
-                                    {{ ucfirst($user->status) }}
+                                    {{ ucfirst($user->status ?: 'unknown') }}
                                 </span>
                             </p>
                         </div>
@@ -45,19 +45,19 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
+        <div class="lg:col-span-6">
+            <div class="bg-white rounded-lg shadow-md">
                 <div class="card-header">
                     <h5 class="card-title">Commission Statistics</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-6">
                             <p><strong>Total Earned:</strong> ${{ number_format($commissionStats['total_earned'], 2) }}</p>
                             <p><strong>Eligible:</strong> ${{ number_format($commissionStats['eligible_earned'], 2) }}</p>
                             <p><strong>Ineligible:</strong> ${{ number_format($commissionStats['ineligible_earned'], 2) }}</p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="lg:col-span-6">
                             <p><strong>Pending Payout:</strong> ${{ number_format($commissionStats['pending_payout'], 2) }}</p>
                             <p><strong>Paid Out:</strong> ${{ number_format($commissionStats['paid_out'], 2) }}</p>
                         </div>
@@ -68,16 +68,16 @@
     </div>
 
     <!-- Referral Tree -->
-    <div class="card">
+    <div class="bg-white rounded-lg shadow-md">
         <div class="card-header">
             <h5 class="card-title">Referral Tree (6 Levels Down)</h5>
         </div>
-        <div class="card-body">
+        <div class="p-6">
             @for($level = 1; $level <= 6; $level++)
                 <div class="mb-4">
                     <h6 class="text-primary mb-3">Level {{ $level }}</h6>
-                    @if(isset($referralTree[$level]) && $referralTree[$level]->count() > 0)
-                        <div class="row">
+                    @if(isset($referralTree[$level]) && $referralTree[$level] && $referralTree[$level]->count() > 0)
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                             @foreach($referralTree[$level] as $referredUser)
                                 <div class="col-md-4 mb-3">
                                     <div class="card border-primary">
@@ -102,7 +102,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-muted">No users at this level.</p>
+                        <p class="text-gray-500">No users at this level.</p>
                     @endif
                 </div>
             @endfor
@@ -110,13 +110,13 @@
     </div>
 
     <!-- Monthly Breakdown -->
-    <div class="card">
+    <div class="bg-white rounded-lg shadow-md">
         <div class="card-header">
             <h5 class="card-title">Monthly Commission Breakdown</h5>
         </div>
-        <div class="card-body">
-            @if($monthlyBreakdown->count() > 0)
-                <div class="table-responsive">
+        <div class="p-6">
+            @if($monthlyBreakdown && $monthlyBreakdown->count() > 0)
+                <div class="overflow-x-auto">
                     <table class="table table-hover">
                         <thead>
                             <tr>

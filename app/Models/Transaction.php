@@ -46,7 +46,7 @@ class Transaction extends Model
      */
     public function subscription()
     {
-        return $this->hasOne(Subscription::class);
+        return $this->hasOne(Subscription::class, 'transaction_id');
     }
 
     /**

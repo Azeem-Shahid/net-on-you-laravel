@@ -27,30 +27,6 @@ class EmailTemplateSeeder extends Seeder
         $templates = [
             [
                 'name' => 'welcome_email',
-                'language' => 'en',
-                'subject' => 'Welcome to Net On You, {name}!',
-                'body' => "Hello {name},
-
-Welcome to Net On You! Your account has been successfully created and you're now part of our community.
-
-Your current plan: {plan}
-Account expires: {expiry}
-
-We're excited to have you on board. Here are some things you can do to get started:
-
-• Browse our magazine collection
-• Set up your profile preferences
-• Invite friends and earn commissions
-• Check out our latest content
-
-If you have any questions, feel free to contact our support team at {support_email}.
-
-Best regards,
-The Net On You Team",
-                'variables' => ['name', 'email', 'plan', 'expiry', 'support_email']
-            ],
-            [
-                'name' => 'welcome_email',
                 'language' => 'ur',
                 'subject' => 'Net On You میں خوش آمدید، {name}!',
                 'body' => "السلام علیکم {name}،
@@ -192,18 +168,27 @@ P.S. Don't forget to check out our latest content!",
             ]
         ];
 
+        $createdCount = 0;
         foreach ($templates as $templateData) {
-            EmailTemplate::create([
-                'name' => $templateData['name'],
-                'language' => $templateData['language'],
-                'subject' => $templateData['subject'],
-                'body' => $templateData['body'],
-                'variables' => $templateData['variables'],
-                'created_by_admin_id' => $admin->id,
-                'updated_by_admin_id' => $admin->id,
-            ]);
+            // Check if template already exists
+            $exists = EmailTemplate::where('name', $templateData['name'])
+                                 ->where('language', $templateData['language'])
+                                 ->exists();
+            
+            if (!$exists) {
+                EmailTemplate::create([
+                    'name' => $templateData['name'],
+                    'language' => $templateData['language'],
+                    'subject' => $templateData['subject'],
+                    'body' => $templateData['body'],
+                    'variables' => $templateData['variables'],
+                    'created_by_admin_id' => $admin->id,
+                    'updated_by_admin_id' => $admin->id,
+                ]);
+                $createdCount++;
+            }
         }
 
-        $this->command->info('Email templates seeded successfully!');
+        $this->command->info("Email templates seeded successfully! Created {$createdCount} new templates.");
     }
 }

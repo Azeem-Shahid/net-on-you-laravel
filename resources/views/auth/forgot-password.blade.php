@@ -14,6 +14,11 @@
             </p>
         </div>
 
+        <!-- Custom Language Widget -->
+        <div class="flex justify-center">
+            @include('components.custom-language-widget')
+        </div>
+
         @if (session('status'))
             <div class="bg-action/20 border border-action/30 rounded-lg p-4">
                 <p class="text-action text-sm">

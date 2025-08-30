@@ -1,66 +1,194 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Net On You - Laravel Platform
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-10.x-red.svg" alt="Laravel Version">
+  <img src="https://img.shields.io/badge/PHP-8.1+-blue.svg" alt="PHP Version">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
 </p>
 
-## About Laravel
+## 🚀 About Net On You
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Net On You is a comprehensive Laravel-based platform that provides a complete business management solution with advanced features including user management, subscription handling, referral systems, commission tracking, and multi-language support.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔐 Authentication & Authorization
+- **Multi-level Admin System**: Super admin, admin, and user roles with granular permissions
+- **Secure Authentication**: Laravel Sanctum integration with session management
+- **Role-based Access Control**: Comprehensive middleware for route protection
 
-## Learning Laravel
+### 💰 Business Management
+- **Subscription Management**: Handle user subscriptions with flexible plans
+- **Transaction Tracking**: Complete financial transaction history and management
+- **Commission System**: Automated referral commission calculation and distribution
+- **Payout Management**: Batch processing for commission payouts
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🌍 Multi-Language Support
+- **Dynamic Language Switching**: Real-time language changes without page reload
+- **Translation Management**: Admin interface for managing translations
+- **Google Translate Integration**: Automated translation services
+- **Language Preferences**: User-specific language settings
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 📧 Communication System
+- **Email Templates**: Customizable email templates with dynamic content
+- **Email Logging**: Complete audit trail of all communications
+- **Notification Settings**: User-configurable notification preferences
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📊 Analytics & Reporting
+- **Dashboard Analytics**: Real-time business metrics and insights
+- **User Analytics**: Comprehensive user behavior tracking
+- **Commission Reports**: Detailed referral and commission analytics
+- **Transaction Reports**: Financial reporting and auditing
 
-## Laravel Sponsors
+### 🔒 Security Features
+- **Audit Logging**: Track all sensitive changes and admin actions
+- **Security Policies**: Configurable security settings and policies
+- **API Key Management**: Secure API access with key rotation
+- **Session Management**: Advanced session handling and security
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Technology Stack
 
-### Premium Partners
+- **Backend**: Laravel 10.x
+- **Database**: SQLite (configurable for MySQL/PostgreSQL)
+- **Frontend**: Blade templates with Tailwind CSS
+- **Authentication**: Laravel Sanctum
+- **Queue System**: Laravel Queue for background processing
+- **Testing**: PHPUnit with comprehensive test coverage
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 📋 Requirements
 
-## Contributing
+- PHP 8.1 or higher
+- Composer
+- Node.js & NPM (for asset compilation)
+- SQLite/MySQL/PostgreSQL
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 Installation
 
-## Code of Conduct
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Azeem-Shahid/net-on-you-laravel.git
+   cd net-on-you-laravel
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-## Security Vulnerabilities
+3. **Install Node.js dependencies**
+   ```bash
+   npm install
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. **Environment setup**
+   ```bash
+   cp env.example .env
+   # Configure your .env file with database and other settings
+   ```
 
-## License
+5. **Generate application key**
+   ```bash
+   php artisan key:generate
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. **Run database migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Seed the database**
+   ```bash
+   php artisan db:seed
+   ```
+
+8. **Compile assets**
+   ```bash
+   npm run build
+   ```
+
+9. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
+
+## 🔧 Configuration
+
+### Database Configuration
+Update your `.env` file with your database credentials:
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/path/to/database.sqlite
+```
+
+### Multi-Language Setup
+1. Configure Google Translate API key in `.env`
+2. Run language setup script: `./install_multilanguage.sh`
+3. Access admin panel to manage translations
+
+### Payment Integration
+1. Configure CoinPayments credentials in `.env`
+2. Set up webhook endpoints
+3. Configure commission rates in admin panel
+
+## 📚 Documentation
+
+- [Admin System Guide](ADMIN_SYSTEM_SUMMARY.md)
+- [Admin User Guide](ADMIN_USER_GUIDE.md)
+- [Payment Module Guide](PAYMENT_MODULE_README.md)
+- [Multi-Language Module Guide](MULTI_LANGUAGE_MODULE_README.md)
+- [Security Module Guide](SECURITY_MODULE_README.md)
+- [Email Module Guide](EMAIL_MODULE_README.md)
+
+## 🧪 Testing
+
+Run the test suite:
+```bash
+php artisan test
+```
+
+Run specific test files:
+```bash
+php artisan test tests/Feature/ComprehensiveBusinessRulesTest.php
+```
+
+## 🚀 Deployment
+
+### cPanel Deployment
+Use the provided deployment script:
+```bash
+./deploy.sh
+```
+
+### Manual Deployment
+1. Upload files to your server
+2. Set proper permissions on storage and bootstrap/cache directories
+3. Configure your web server to point to the public directory
+4. Run `php artisan config:cache` and `php artisan route:cache`
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Team
+
+- **Lead Developer**: Azeem Shahid
+- **Project**: Net On You Platform
+
+## 📞 Support
+
+For support and questions:
+- Create an issue in the GitHub repository
+- Check the documentation files in the project root
+- Review the admin guides for specific functionality
+
+---
+
+**Net On You** - Empowering businesses with comprehensive management solutions.

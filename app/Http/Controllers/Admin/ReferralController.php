@@ -55,25 +55,25 @@ class ReferralController extends Controller
     public function show(User $user)
     {
         // Get referral tree (6 levels down)
-        $referralTree = $this->buildReferralTree($user);
+        $referralTree = $this->buildReferralTree($user) ?? [];
 
         // Get commission statistics for this user
         $commissionStats = [
-            'total_earned' => Commission::where('earner_user_id', $user->id)->sum('amount'),
+            'total_earned' => Commission::where('earner_user_id', $user->id)->sum('amount') ?? 0,
             'eligible_earned' => Commission::where('earner_user_id', $user->id)
                 ->where('eligibility', 'eligible')
-                ->sum('amount'),
+                ->sum('amount') ?? 0,
             'ineligible_earned' => Commission::where('earner_user_id', $user->id)
                 ->where('eligibility', 'ineligible')
-                ->sum('amount'),
+                ->sum('amount') ?? 0,
             'pending_payout' => Commission::where('earner_user_id', $user->id)
                 ->where('eligibility', 'eligible')
                 ->where('payout_status', 'pending')
-                ->sum('amount'),
+                ->sum('amount') ?? 0,
             'paid_out' => Commission::where('earner_user_id', $user->id)
                 ->where('eligibility', 'eligible')
                 ->where('payout_status', 'paid')
-                ->sum('amount'),
+                ->sum('amount') ?? 0,
         ];
 
         // Get monthly breakdown
@@ -81,7 +81,7 @@ class ReferralController extends Controller
             ->selectRaw('month, SUM(amount) as total_amount, COUNT(*) as count')
             ->groupBy('month')
             ->orderBy('month', 'desc')
-            ->get();
+            ->get() ?? collect();
 
         return view('admin.referrals.show', compact('user', 'referralTree', 'commissionStats', 'monthlyBreakdown'));
     }

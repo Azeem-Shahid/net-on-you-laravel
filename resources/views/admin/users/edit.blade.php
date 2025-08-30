@@ -90,30 +90,6 @@
                                 <option value="es" {{ old('language', $user->language) === 'es' ? 'selected' : '' }}>
                                     Spanish
                                 </option>
-                                <option value="fr" {{ old('language', $user->language) === 'fr' ? 'selected' : '' }}>
-                                    French
-                                </option>
-                                <option value="de" {{ old('language', $user->language) === 'de' ? 'selected' : '' }}>
-                                    German
-                                </option>
-                                <option value="it" {{ old('language', $user->language) === 'it' ? 'selected' : '' }}>
-                                    Italian
-                                </option>
-                                <option value="pt" {{ old('language', $user->language) === 'pt' ? 'selected' : '' }}>
-                                    Portuguese
-                                </option>
-                                <option value="ru" {{ old('language', $user->language) === 'ru' ? 'selected' : '' }}>
-                                    Russian
-                                </option>
-                                <option value="zh" {{ old('language', $user->language) === 'zh' ? 'selected' : '' }}>
-                                    Chinese
-                                </option>
-                                <option value="ja" {{ old('language', $user->language) === 'ja' ? 'selected' : '' }}>
-                                    Japanese
-                                </option>
-                                <option value="ko" {{ old('language', $user->language) === 'ko' ? 'selected' : '' }}>
-                                    Korean
-                                </option>
                             </select>
                         </div>
 

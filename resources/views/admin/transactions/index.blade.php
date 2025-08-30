@@ -13,9 +13,7 @@
                     <p class="text-sm text-gray-600">Monitor and manage payment transactions</p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('admin.transactions.export') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                        Export CSV
-                    </a>
+                    <!-- Export button removed -->
                 </div>
             </div>
         </div>

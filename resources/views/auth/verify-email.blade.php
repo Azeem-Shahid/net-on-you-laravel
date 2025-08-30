@@ -19,6 +19,11 @@
             </p>
         </div>
 
+        <!-- Custom Language Widget -->
+        <div class="flex justify-center">
+            @include('components.custom-language-widget')
+        </div>
+
         <div class="bg-primary/50 border border-action/30 rounded-lg p-6">
             <p class="text-white text-sm text-center">
                 We've sent a verification link to <strong>{{ auth()->user()->email }}</strong>

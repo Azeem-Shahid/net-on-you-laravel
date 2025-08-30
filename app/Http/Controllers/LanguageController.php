@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TranslationService;
 use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
-    protected $translationService;
-
-    public function __construct(TranslationService $translationService)
-    {
-        $this->translationService = $translationService;
-    }
 
     /**
      * Switch language
@@ -25,8 +18,13 @@ class LanguageController extends Controller
 
         $languageCode = $request->language;
         
-        // Set the language
-        $this->translationService->setLanguage($languageCode);
+        // Save to session for guests
+        session(['language' => $languageCode]);
+        
+        // Save to user language field if logged in
+        if (auth()->check()) {
+            auth()->user()->update(['language' => $languageCode]);
+        }
 
         // Check if this is an AJAX request
         if ($request->ajax() || $request->wantsJson()) {
@@ -48,8 +46,23 @@ class LanguageController extends Controller
      */
     public function current()
     {
-        $currentLanguage = $this->translationService->getCurrentLanguage();
-        $availableLanguages = $this->translationService->getAvailableLanguages();
+        // Get current language from user preference or session
+        $currentLanguage = 'en'; // Default
+        
+        if (auth()->check()) {
+            $user = auth()->user();
+            if (isset($user->language) && $user->language) {
+                $currentLanguage = $user->language;
+            }
+        } elseif (session()->has('language')) {
+            $currentLanguage = session('language');
+        }
+        
+        // Return available languages for GTranslate widget
+        $availableLanguages = [
+            ['code' => 'en', 'name' => 'English'],
+            ['code' => 'es', 'name' => 'Español']
+        ];
         
         return response()->json([
             'current' => $currentLanguage,

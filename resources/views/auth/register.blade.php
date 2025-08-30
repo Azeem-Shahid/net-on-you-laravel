@@ -15,6 +15,11 @@
                 </p>
             </div>
 
+            <!-- Custom Language Widget -->
+            <div class="flex justify-center">
+                @include('components.custom-language-widget')
+            </div>
+
         <form class="mt-8 space-y-6" method="POST" action="{{ route('register') }}">
             @csrf
             
@@ -70,24 +75,6 @@
                            class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_wallet_address', [], 'auth') }}"
                            value="{{ old('wallet_address') }}">
-                </div>
-
-                <!-- Language -->
-                <div>
-                    <label for="language" class="block text-sm font-medium text-white">
-                        {{ t('language_preference', [], 'auth') }}
-                    </label>
-                    <select id="language" name="language" 
-                            class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all">
-                        @php
-                            $availableLanguages = available_languages();
-                        @endphp
-                        @foreach($availableLanguages as $language)
-                            <option value="{{ $language->code }}" {{ old('language') == $language->code ? 'selected' : '' }}>
-                                {{ $language->name }}
-                            </option>
-                        @endforeach
-                    </select>
                 </div>
 
                 <!-- Referrer ID -->

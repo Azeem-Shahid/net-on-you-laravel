@@ -14,6 +14,11 @@
             </p>
         </div>
 
+        <!-- Custom Language Widget -->
+        <div class="flex justify-center">
+            @include('components.custom-language-widget')
+        </div>
+
         <form class="mt-8 space-y-6" method="POST" action="{{ route('password.update') }}">
             @csrf
             
