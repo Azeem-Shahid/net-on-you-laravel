@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             SecurityPolicySeeder::class,
             ContractSeeder::class,
+            ScheduledCommandsSeeder::class,
         ]);
         
         $this->command->info('Database seeding completed successfully!');

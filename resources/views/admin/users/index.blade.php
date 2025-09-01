@@ -69,6 +69,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscription</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commission Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Language</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -105,6 +106,22 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @php
+                                        $currentMonth = now()->format('Y-m');
+                                        $commissionEligibility = $user->getCommissionEligibility($currentMonth);
+                                        $statusColor = $commissionEligibility === 'eligible' ? 'text-green-600' : 'text-red-600';
+                                        $statusText = $commissionEligibility === 'eligible' ? 'Eligible' : 'Not Eligible';
+                                    @endphp
+                                    <span class="{{ $statusColor }} font-medium">{{ $statusText }}</span>
+                                    <div class="text-xs text-gray-500">
+                                        @if($commissionEligibility === 'eligible')
+                                            <span class="text-green-600">●</span> Green - Can receive commissions
+                                        @else
+                                            <span class="text-red-600">●</span> Red - No direct sales this month
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {{ strtoupper($user->language) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -118,12 +135,16 @@
                                                 class="text-{{ $user->status === 'blocked' ? 'green' : 'red' }}-600 hover:text-{{ $user->status === 'blocked' ? 'green' : 'red' }}-900">
                                             {{ $user->status === 'blocked' ? 'Unblock' : 'Block' }}
                                         </button>
+                                        <button onclick="resetUserBalance({{ $user->id }})" 
+                                                class="text-purple-600 hover:text-purple-900">
+                                            Reset Balance
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No users found</td>
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">No users found</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -164,6 +185,31 @@ function toggleUserStatus(userId, currentStatus) {
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred while updating user status');
+        });
+    }
+}
+
+function resetUserBalance(userId) {
+    if (confirm('Are you sure you want to reset this user\'s commission balance to zero? This will mark all pending commissions as paid.')) {
+        fetch(`/admin/users/${userId}/reset-balance`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Success: ' + data.message);
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while resetting user balance');
         });
     }
 }

@@ -17,7 +17,11 @@ return new class extends Migration
             $table->enum('status', ['open', 'processing', 'closed'])->default('open')->index();
             $table->decimal('total_amount', 18, 2);
             $table->text('notes')->nullable();
+            $table->unsignedBigInteger('created_by_admin_id')->nullable();
+            $table->timestamp('processed_at')->nullable();
             $table->timestamps();
+            
+            $table->foreign('created_by_admin_id')->references('id')->on('admins')->onDelete('set null');
         });
     }
 

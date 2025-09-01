@@ -259,6 +259,46 @@ class UserController extends Controller
     }
 
     /**
+     * Reset user's commission balance to zero after payments
+     */
+    public function resetBalance(User $user)
+    {
+        try {
+            // Get current month
+            $currentMonth = now()->format('Y-m');
+            
+            // Reset all pending commissions for the current month to 'paid' status
+            $updatedCount = \App\Models\Commission::where('earner_user_id', $user->id)
+                ->where('month', $currentMonth)
+                ->where('payout_status', 'pending')
+                ->update(['payout_status' => 'paid']);
+
+            // Log balance reset
+            AdminActivityLog::log(
+                auth()->id(),
+                'reset_user_balance',
+                'user',
+                $user->id,
+                [
+                    'user_email' => $user->email,
+                    'month' => $currentMonth,
+                    'commissions_updated' => $updatedCount
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => "User balance reset successfully. {$updatedCount} commissions marked as paid."
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reset user balance: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Export users to CSV
      */
     public function export(Request $request)

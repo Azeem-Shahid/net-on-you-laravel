@@ -3,173 +3,163 @@
 @section('title', 'Email Campaigns')
 
 @section('content')
-<div class="container-fluid">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 mb-0">Email Campaigns</h1>
-                <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
-                    <i class="fas fa-plus"></i> Create Campaign
-                </a>
-            </div>
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4 sm:mb-0">Email Campaigns</h1>
+            <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
+                <i class="fas fa-plus"></i> Create Campaign
+            </a>
+        </div>
 
-            <!-- Campaign Statistics -->
-            <div class="row mb-4">
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card bg-info text-white">
-                        <div class="p-6">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0" id="totalUsers">-</h4>
-                                    <small>Total Users</small>
-                                </div>
-                                <i class="fas fa-users fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card bg-success text-white">
-                        <div class="p-6">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0" id="marketingOptIn">-</h4>
-                                    <small>Marketing Opt-in</small>
-                                </div>
-                                <i class="fas fa-check-circle fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card bg-warning text-white">
-                        <div class="p-6">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0" id="marketingOptOut">-</h4>
-                                    <small>Marketing Opt-out</small>
-                                </div>
-                                <i class="fas fa-ban fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card bg-secondary text-white">
-                        <div class="p-6">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0" id="noPreference">-</h4>
-                                    <small>No Preference</small>
-                                </div>
-                                <i class="fas fa-question-circle fa-2x opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Campaign Activity -->
-            <div class="bg-white rounded-lg shadow-md">
-                <div class="card-header">
-                    <h5 class="mb-0">Recent Campaign Activity</h5>
-                </div>
+        <!-- Campaign Statistics -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="bg-blue-600 text-white rounded-lg shadow-md">
                 <div class="p-6">
-                    @if($recentBulkEmails->count() > 0)
-                        <div class="overflow-x-auto">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Template</th>
-                                        <th>Date</th>
-                                        <th>Emails Sent</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($recentBulkEmails as $activity)
-                                        <tr>
-                                            <td>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary text-white">{{ $activity->template_name }}</span>
-                                            </td>
-                                            <td>{{ \Carbon\Carbon::parse($activity->created_at)->format('M d, Y H:i') }}</td>
-                                            <td>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ $activity->count }}</span>
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('admin.email-logs.index', ['template' => $activity->template_name]) }}" 
-                                                   class="inline-flex items-center px-2 py-1 bg-transparent border border-action text-action text-sm font-medium rounded hover:bg-action hover:text-primary transition-colors">
-                                                    <i class="fas fa-eye"></i> View Logs
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-2xl font-bold mb-1" id="totalUsers">-</h4>
+                            <p class="text-sm opacity-75">Total Users</p>
                         </div>
+                        <i class="fas fa-users text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-green-600 text-white rounded-lg shadow-md">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-2xl font-bold mb-1" id="marketingOptIn">-</h4>
+                            <p class="text-sm opacity-75">Marketing Opt-in</p>
+                        </div>
+                        <i class="fas fa-check-circle text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-yellow-600 text-white rounded-lg shadow-md">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-2xl font-bold mb-1" id="marketingOptOut">-</h4>
+                            <p class="text-sm opacity-75">Marketing Opt-out</p>
+                        </div>
+                        <i class="fas fa-ban text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-600 text-white rounded-lg shadow-md">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-2xl font-bold mb-1" id="noPreference">-</h4>
+                            <p class="text-sm opacity-75">No Preference</p>
+                        </div>
+                        <i class="fas fa-question-circle text-3xl opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Pagination -->
-                        @if($recentBulkEmails->hasPages())
-                            <div class="d-flex justify-content-center mt-4">
-                                {{ $recentBulkEmails->links() }}
-                            </div>
-                        @endif
-                    @else
-                        <div class="text-center py-5">
-                            <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
-                            <h4>No Campaign Activity Yet</h4>
-                            <p class="text-gray-500">Create your first email campaign to get started.</p>
-                            <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
-                                <i class="fas fa-plus"></i> Create Campaign
-                            </a>
+        <!-- Recent Campaign Activity -->
+        <div class="bg-white rounded-lg shadow-md mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h5 class="text-lg font-medium text-gray-900">Recent Campaign Activity</h5>
+            </div>
+            <div class="p-6">
+                @if($recentBulkEmails->count() > 0)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Template</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Emails Sent</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach($recentBulkEmails as $activity)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary text-white">{{ $activity->template_name }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ \Carbon\Carbon::parse($activity->created_at)->format('M d, Y H:i') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ $activity->count }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="{{ route('admin.email-logs.index', ['template' => $activity->template_name]) }}" 
+                                               class="inline-flex items-center px-2 py-1 bg-transparent border border-action text-action text-sm font-medium rounded hover:bg-action hover:text-primary transition-colors">
+                                                <i class="fas fa-eye"></i> View Logs
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    @if($recentBulkEmails->hasPages())
+                        <div class="flex justify-center mt-6">
+                            {{ $recentBulkEmails->links() }}
                         </div>
                     @endif
-                </div>
+                @else
+                    <div class="text-center py-12">
+                        <i class="fas fa-bullhorn text-5xl text-gray-400 mb-4"></i>
+                        <h4 class="text-xl font-medium text-gray-900 mb-2">No Campaign Activity Yet</h4>
+                        <p class="text-gray-500 mb-6">Create your first email campaign to get started.</p>
+                        <a href="{{ route('admin.campaigns.create') }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
+                            <i class="fas fa-plus"></i> Create Campaign
+                        </a>
+                    </div>
+                @endif
             </div>
+        </div>
 
-            <!-- Quick Campaign Actions -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Quick Campaign Actions</h5>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        <div class="col-md-6 mb-3">
-                            <div class="card border-primary">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-envelope-open-text fa-2x text-primary mb-3"></i>
-                                    <h5>Welcome Series</h5>
-                                    <p class="text-gray-500">Send welcome emails to new users</p>
-                                    <a href="{{ route('admin.campaigns.create') }}?type=welcome" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
-                                        Create Welcome Campaign
-                                    </a>
-                                </div>
+        <!-- Quick Campaign Actions -->
+        <div class="bg-white rounded-lg shadow-md mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h5 class="text-lg font-medium text-gray-900">Quick Campaign Actions</h5>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-6">
+                        <div class="bg-white border border-primary rounded-lg shadow-sm">
+                            <div class="p-6 text-center">
+                                <i class="fas fa-envelope-open-text text-4xl text-primary mb-4"></i>
+                                <h5 class="text-lg font-medium text-gray-900 mb-2">Welcome Series</h5>
+                                <p class="text-gray-500 mb-4">Send welcome emails to new users</p>
+                                <a href="{{ route('admin.campaigns.create') }}?type=welcome" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
+                                    Create Welcome Campaign
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <div class="card border-success">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-bullhorn fa-2x text-success mb-3"></i>
-                                    <h5>Newsletter</h5>
-                                    <p class="text-gray-500">Send updates and announcements</p>
-                                    <a href="{{ route('admin.campaigns.create') }}?type=newsletter" class="inline-flex items-center px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors">
-                                        Create Newsletter
-                                    </a>
-                                </div>
+                    </div>
+                    <div class="lg:col-span-6">
+                        <div class="bg-white border border-green-600 rounded-lg shadow-sm">
+                            <div class="p-6 text-center">
+                                <i class="fas fa-bullhorn text-4xl text-green-600 mb-4"></i>
+                                <h5 class="text-lg font-medium text-gray-900 mb-2">Newsletter</h5>
+                                <p class="text-gray-500 mb-4">Send updates and announcements</p>
+                                <a href="{{ route('admin.campaigns.create') }}?type=newsletter" class="inline-flex items-center px-4 py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors">
+                                    Create Newsletter
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Language Distribution -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5 class="mb-0">User Language Distribution</h5>
-                </div>
-                <div class="p-6">
-                    <div id="languageChart" style="height: 300px;"></div>
-                </div>
+        <!-- Language Distribution -->
+        <div class="bg-white rounded-lg shadow-md">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h5 class="text-lg font-medium text-gray-900">User Language Distribution</h5>
+            </div>
+            <div class="p-6">
+                <div id="languageChart" style="height: 300px;"></div>
             </div>
         </div>
     </div>

@@ -14,11 +14,22 @@ class PayoutBatch extends Model
         'status',
         'total_amount',
         'notes',
+        'created_by_admin_id',
+        'processed_at',
     ];
 
     protected $casts = [
         'total_amount' => 'decimal:2',
+        'processed_at' => 'datetime',
     ];
+
+    /**
+     * Get the admin who created this batch
+     */
+    public function createdByAdmin()
+    {
+        return $this->belongsTo(Admin::class, 'created_by_admin_id');
+    }
 
     /**
      * Get the payout batch items

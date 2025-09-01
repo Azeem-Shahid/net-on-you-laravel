@@ -35,46 +35,39 @@ class PaymentController extends Controller
             return redirect()->route('contract.show')->with('error', 'You must accept the contract before proceeding with payment.');
         }
 
-        $plans = [
-            'monthly' => [
-                'name' => 'Monthly Plan',
-                'price' => 29.99,
-                'duration' => 30,
-                'description' => 'Access to all magazines for 30 days'
-            ],
-            'annual' => [
-                'name' => 'Annual Plan',
-                'price' => 299.99,
-                'duration' => 365,
-                'description' => 'Access to all magazines for 1 year (Save 17%)'
-            ]
+        // Single 2-year subscription plan as per business requirements
+        $plan = [
+            'name' => '2-Year Magazine Subscription',
+            'price' => 39.90,
+            'currency' => 'USDT',
+            'duration' => 730, // 2 years in days
+            'description' => 'Access to all bimonthly magazines for 2 years (6 magazines per year)',
+            'magazines_included' => '12 magazines (6 per year)',
+            'renewal_required' => 'After 2 years, renewal required to maintain access'
         ];
-
-        $selectedPlan = $request->get('plan', 'monthly');
         
-        return view('payment.checkout', compact('plans', 'selectedPlan'));
+        return view('payment.checkout', compact('plan'));
     }
 
     /**
      * Grant free access to special users
      */
-    private function grantFreeAccess(User $user): void
+    private function grantFreeAccess(\App\Models\User $user): void
     {
         // Create a free subscription
         $subscription = \App\Models\Subscription::create([
             'user_id' => $user->id,
-            'plan_type' => 'free',
+            'plan_name' => 'Free Access Plan',
+            'subscription_type' => 'free',
             'status' => 'active',
             'start_date' => now(),
             'end_date' => now()->addYears(2), // 2 years free access
             'amount' => 0.00,
-            'currency' => 'USDT',
-            'payment_method' => 'free_access',
             'notes' => $user->getFreeAccessReason(),
         ]);
 
         // Grant magazine entitlements
-        $magazines = \App\Models\Magazine::where('is_active', true)->get();
+        $magazines = \App\Models\Magazine::where('status', 'active')->get();
         foreach ($magazines as $magazine) {
             \App\Models\MagazineEntitlement::create([
                 'user_id' => $user->id,
@@ -92,16 +85,16 @@ class PaymentController extends Controller
     public function initiate(Request $request)
     {
         $request->validate([
-            'plan' => 'required|in:monthly,annual',
             'payment_method' => 'required|in:crypto,manual'
         ]);
 
-        $plans = [
-            'monthly' => ['price' => 29.99, 'duration' => 30],
-            'annual' => ['price' => 299.99, 'duration' => 365]
+        // Single 2-year subscription plan as per business requirements
+        $plan = [
+            'price' => 39.90,
+            'duration' => 730, // 2 years in days
+            'currency' => 'USDT'
         ];
 
-        $plan = $plans[$request->plan];
         $user = auth()->user();
 
         // Check if user already has active subscription
@@ -113,12 +106,12 @@ class PaymentController extends Controller
         $transaction = Transaction::create([
             'user_id' => $user->id,
             'amount' => $plan['price'],
-            'currency' => 'USD',
+            'currency' => $plan['currency'],
             'gateway' => $request->payment_method === 'crypto' ? 'coinpayments' : 'manual',
             'status' => 'pending',
-            'notes' => "Subscription payment for {$request->plan} plan",
+            'notes' => "2-Year Magazine Subscription payment",
             'meta' => [
-                'plan' => $request->plan,
+                'plan' => '2year',
                 'duration_days' => $plan['duration'],
                 'payment_method' => $request->payment_method
             ]

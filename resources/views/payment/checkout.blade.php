@@ -7,41 +7,40 @@
     <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Choose Your Plan</h1>
-            <p class="text-gray-600">Get access to all premium magazines</p>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">2-Year Magazine Subscription</h1>
+            <p class="text-gray-600">Get access to all premium magazines for 2 years</p>
         </div>
 
-        <!-- Plan Selection -->
-        <div class="space-y-4 mb-8">
-            @foreach($plans as $planKey => $plan)
-            <div class="relative">
-                <input type="radio" name="plan" id="plan_{{ $planKey }}" value="{{ $planKey }}" 
-                       class="sr-only peer" {{ $selectedPlan === $planKey ? 'checked' : '' }}>
-                <label for="plan_{{ $planKey }}" 
-                       class="block p-6 bg-white border-2 border-gray-200 rounded-xl cursor-pointer transition-all duration-200 peer-checked:border-blue-500 peer-checked:ring-2 peer-checked:ring-blue-100 hover:border-gray-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">{{ $plan['name'] }}</h3>
-                        <div class="text-right">
-                            <div class="text-3xl font-bold text-blue-600">${{ number_format($plan['price'], 2) }}</div>
-                            <div class="text-sm text-gray-500">
-                                @if($planKey === 'annual')
-                                    <span class="text-green-600 font-medium">Save 17%</span>
-                                @else
-                                    per month
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">{{ $plan['description'] }}</p>
-                    <div class="flex items-center text-sm text-gray-500">
+        <!-- Plan Display -->
+        <div class="bg-white border-2 border-blue-500 rounded-xl p-6 mb-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">{{ $plan['name'] }}</h3>
+                <div class="mb-4">
+                    <div class="text-4xl font-bold text-blue-600">{{ $plan['currency'] }} {{ number_format($plan['price'], 2) }}</div>
+                    <div class="text-sm text-gray-500">for 2 years</div>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">{{ $plan['description'] }}</p>
+                <div class="space-y-2 text-sm text-gray-500">
+                    <div class="flex items-center justify-center">
                         <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        Access to all magazines
+                        {{ $plan['magazines_included'] }}
                     </div>
-                </label>
+                    <div class="flex items-center justify-center">
+                        <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Bimonthly magazine releases
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        {{ $plan['renewal_required'] }}
+                    </div>
+                </div>
             </div>
-            @endforeach
         </div>
 
         <!-- Payment Method Selection -->
@@ -55,7 +54,7 @@
                            class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer transition-all duration-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:border-gray-300">
                         <div class="flex-shrink-0 w-5 h-5 border-2 border-gray-300 rounded-full mr-3 peer-checked:border-blue-500 peer-checked:bg-blue-500"></div>
                         <div class="flex-1">
-                            <div class="font-medium text-gray-900">Cryptocurrency (USDT/BTC)</div>
+                            <div class="font-medium text-gray-900">Cryptocurrency (USDT/USDC)</div>
                             <div class="text-sm text-gray-500">Pay with crypto via CoinPayments</div>
                         </div>
                         <div class="flex items-center space-x-2">
@@ -91,24 +90,26 @@
         <!-- Payment Form -->
         <form action="{{ route('payment.initiate') }}" method="POST" class="space-y-6">
             @csrf
-            <input type="hidden" name="plan" id="selected_plan" value="{{ $selectedPlan }}">
             <input type="hidden" name="payment_method" id="selected_payment_method" value="crypto">
 
             <!-- Total Summary -->
             <div class="bg-blue-50 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-600">Selected Plan:</span>
-                    <span class="font-medium text-gray-900" id="plan_summary">{{ $plans[$selectedPlan]['name'] }}</span>
+                    <span class="text-gray-600">Subscription:</span>
+                    <span class="font-medium">{{ $plan['name'] }}</span>
                 </div>
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-gray-600">Duration:</span>
-                    <span class="font-medium text-gray-900" id="duration_summary">{{ $plans[$selectedPlan]['duration'] }} days</span>
+                    <span class="font-medium">2 years (730 days)</span>
                 </div>
-                <div class="border-t border-blue-200 pt-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-lg font-semibold text-gray-900">Total Amount:</span>
-                        <span class="text-2xl font-bold text-blue-600" id="total_amount">${{ number_format($plans[$selectedPlan]['price'], 2) }}</span>
-                    </div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-600">Magazines:</span>
+                    <span class="font-medium">{{ $plan['magazines_included'] }}</span>
+                </div>
+                <hr class="my-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-lg font-semibold text-gray-900">Total:</span>
+                    <span class="text-2xl font-bold text-blue-600">{{ $plan['currency'] }} {{ number_format($plan['price'], 2) }}</span>
                 </div>
             </div>
 
@@ -140,28 +141,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const planInputs = document.querySelectorAll('input[name="plan"]');
     const paymentInputs = document.querySelectorAll('input[name="payment_method"]');
-    const selectedPlanInput = document.getElementById('selected_plan');
     const selectedPaymentInput = document.getElementById('selected_payment_method');
-    const planSummary = document.getElementById('plan_summary');
-    const durationSummary = document.getElementById('duration_summary');
-    const totalAmount = document.getElementById('total_amount');
     const buttonText = document.getElementById('button_text');
     const loadingSpinner = document.getElementById('loading_spinner');
-
-    const plans = @json($plans);
-
-    // Update form when plan changes
-    planInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const plan = plans[this.value];
-            selectedPlanInput.value = this.value;
-            planSummary.textContent = plan.name;
-            durationSummary.textContent = plan.duration + ' days';
-            totalAmount.textContent = '$' + plan.price.toFixed(2);
-        });
-    });
 
     // Update form when payment method changes
     paymentInputs.forEach(input => {

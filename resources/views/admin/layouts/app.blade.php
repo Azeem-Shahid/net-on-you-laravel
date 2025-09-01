@@ -8,6 +8,10 @@
     <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Net On You') }}</title>
 
     <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     
     <!-- Fonts -->
@@ -181,7 +185,13 @@
                                         Campaigns
                                     </a>
                                 </li>
-                    <li>
+                                <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.contracts.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.contracts.index') }}">
+                            <i class="fas fa-file-contract mr-3"></i>
+                                        Contracts
+                                    </a>
+                                </li>
+                    {{-- <li>
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.languages.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.languages.index') }}">
                             <i class="fas fa-language mr-3"></i>
                                         Languages
@@ -192,7 +202,7 @@
                             <i class="fas fa-translate mr-3"></i>
                                         Translations
                                     </a>
-                                </li>
+                                </li> --}}
                     <li>
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.settings.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.settings.index') }}">
                             <i class="fas fa-cog mr-3"></i>
@@ -203,6 +213,18 @@
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.security.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.security.index') }}">
                             <i class="fas fa-lock mr-3"></i>
                                         Security
+                                    </a>
+                                </li>
+                    <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.command-scheduler.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.command-scheduler.index') }}">
+                            <i class="fas fa-clock mr-3"></i>
+                                        System Scheduler
+                                    </a>
+                                </li>
+                    <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.cron-jobs.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.cron-jobs.index') }}">
+                            <i class="fas fa-cogs mr-3"></i>
+                                        Cron Job Management
                                     </a>
                                 </li>
                 </ul>
@@ -299,6 +321,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.contracts.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.contracts.index') }}" onclick="closeMobileSidebar()">
+                            <i class="fas fa-file-contract mr-3"></i>
+                            Contracts
+                        </a>
+                    </li>
+                    {{-- <li>
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.languages.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.languages.index') }}" onclick="closeMobileSidebar()">
                             <i class="fas fa-language mr-3"></i>
                             Languages
@@ -309,7 +337,7 @@
                             <i class="fas fa-translate mr-3"></i>
                             Translations
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.settings.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.settings.index') }}" onclick="closeMobileSidebar()">
                             <i class="fas fa-cog mr-3"></i>
@@ -320,6 +348,18 @@
                         <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.security.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.security.index') }}" onclick="closeMobileSidebar()">
                             <i class="fas fa-lock mr-3"></i>
                             Security
+                                    </a>
+                                </li>
+                                <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.command-scheduler.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.command-scheduler.index') }}" onclick="closeMobileSidebar()">
+                            <i class="fas fa-clock mr-3"></i>
+                            System Scheduler
+                                    </a>
+                                </li>
+                                <li>
+                        <a class="flex items-center px-4 py-3 text-white/80 hover:text-action hover:bg-white/10 rounded-lg transition-all {{ request()->routeIs('admin.cron-jobs.*') ? 'text-action bg-white/10' : '' }}" href="{{ route('admin.cron-jobs.index') }}" onclick="closeMobileSidebar()">
+                            <i class="fas fa-cogs mr-3"></i>
+                            Cron Job Management
                                     </a>
                                 </li>
                             </ul>

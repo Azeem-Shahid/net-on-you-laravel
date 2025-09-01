@@ -32,8 +32,13 @@ class CoinPaymentsService
     /**
      * Create a new transaction with CoinPayments
      */
-    public function createTransaction(float $amountUSD, string $currency1 = 'USD', ?string $buyerEmail = null, array $meta = []): array
+    public function createTransaction(float $amountUSD = null, string $currency1 = 'USD', ?string $buyerEmail = null, array $meta = []): array
     {
+        // Use configured subscription price if no amount provided
+        if ($amountUSD === null) {
+            $amountUSD = (float) config('services.coinpayments.subscription_price', 39.90);
+        }
+
         $params = [
             'cmd' => 'create_transaction',
             'version' => '1',
@@ -42,7 +47,7 @@ class CoinPaymentsService
             'currency1' => $currency1,          // price currency
             'currency2' => $this->currency2,    // coin to pay with e.g. USDT.TRC20
             'buyer_email' => $buyerEmail,
-            'item_name' => $meta['item_name'] ?? 'Order',
+            'item_name' => $meta['item_name'] ?? 'Subscription',
             'invoice' => $meta['invoice'] ?? str()->uuid()->toString(),
             'ipn_url' => $this->ipnUrl,
             'success_url' => route('dashboard'),

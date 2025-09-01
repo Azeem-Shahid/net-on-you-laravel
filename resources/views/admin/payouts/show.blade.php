@@ -3,39 +3,53 @@
 @section('title', 'Payout Batch Details - Admin')
 
 @section('content')
-<div class="container-fluid">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Payout Batch #{{ $payoutBatch->id }}</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.payouts.index') }}">Payouts</a></li>
-                    <li class="breadcrumb-item active">Batch Details</li>
-                </ul>
+    <div class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div class="mb-4 sm:mb-0">
+                <h1 class="text-3xl font-bold text-gray-900">Payout Batch #{{ $payoutBatch->id }}</h1>
+                <nav class="flex mt-2" aria-label="Breadcrumb">
+                    <ol class="flex items-center space-x-2">
+                        <li>
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-500 hover:text-gray-700">Dashboard</a>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <a href="{{ route('admin.payouts.index') }}" class="text-gray-500 hover:text-gray-700">Payouts</a>
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700 font-medium">Batch Details</span>
+                        </li>
+                    </ol>
+                </nav>
             </div>
-            <div class="col-auto">
+            <div class="flex-shrink-0">
                 <a href="{{ route('admin.payouts.export', $payoutBatch) }}" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">
-                    <i class="fas fa-download"></i> Export CSV
+                    <i class="fas fa-download mr-2"></i> Export CSV
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Batch Information -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
         <div class="lg:col-span-6">
-            <div class="bg-white rounded-lg shadow-md">
-                <div class="card-header">
-                    <h5 class="card-title">Batch Information</h5>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h5 class="text-lg font-medium text-gray-900">Batch Information</h5>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         <div class="lg:col-span-6">
-                            <p><strong>Batch ID:</strong> {{ $payoutBatch->id }}</p>
-                            <p><strong>Period:</strong> {{ $payoutBatch->period }}</p>
-                            <p><strong>Status:</strong> 
+                            <p class="mb-2"><span class="font-medium text-gray-700">Batch ID:</span> {{ $payoutBatch->id }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Period:</span> {{ $payoutBatch->period }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Status:</span> 
                                 @if($payoutBatch->status === 'open')
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Open</span>
                                 @elseif($payoutBatch->status === 'processing')
@@ -46,14 +60,14 @@
                             </p>
                         </div>
                         <div class="lg:col-span-6">
-                            <p><strong>Total Amount:</strong> ${{ number_format($payoutBatch->total_amount, 2) }}</p>
-                            <p><strong>Items Count:</strong> {{ $payoutBatch->items->count() }}</p>
-                            <p><strong>Created:</strong> {{ $payoutBatch->created_at->format('M d, Y H:i') }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Total Amount:</span> ${{ number_format($payoutBatch->total_amount, 2) }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Items Count:</span> {{ $payoutBatch->items->count() }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Created:</span> {{ $payoutBatch->created_at->format('M d, Y H:i') }}</p>
                         </div>
                     </div>
                     @if($payoutBatch->notes)
-                        <div class="mt-3">
-                            <p><strong>Notes:</strong></p>
+                        <div class="mt-4">
+                            <p class="font-medium text-gray-700 mb-2">Notes:</p>
                             <p class="text-gray-500">{{ $payoutBatch->notes }}</p>
                         </div>
                     @endif
@@ -61,19 +75,19 @@
             </div>
         </div>
         <div class="lg:col-span-6">
-            <div class="bg-white rounded-lg shadow-md">
-                <div class="card-header">
-                    <h5 class="card-title">Status Summary</h5>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h5 class="text-lg font-medium text-gray-900">Status Summary</h5>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         <div class="lg:col-span-6">
-                            <p><strong>Queued:</strong> {{ $payoutBatch->items->where('status', 'queued')->count() }}</p>
-                            <p><strong>Sent:</strong> {{ $payoutBatch->items->where('status', 'sent')->count() }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Queued:</span> {{ $payoutBatch->items->where('status', 'queued')->count() }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Sent:</span> {{ $payoutBatch->items->where('status', 'sent')->count() }}</p>
                         </div>
                         <div class="lg:col-span-6">
-                            <p><strong>Paid:</strong> {{ $payoutBatch->items->where('status', 'paid')->count() }}</p>
-                            <p><strong>Failed:</strong> {{ $payoutBatch->items->where('status', 'failed')->count() }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Paid:</span> {{ $payoutBatch->items->where('status', 'paid')->count() }}</p>
+                            <p class="mb-2"><span class="font-medium text-gray-700">Failed:</span> {{ $payoutBatch->items->where('status', 'failed')->count() }}</p>
                         </div>
                     </div>
                 </div>
@@ -82,76 +96,79 @@
     </div>
 
     <!-- Payout Items -->
-    <div class="bg-white rounded-lg shadow-md">
-        <div class="card-header">
-            <h5 class="card-title">Payout Items</h5>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h5 class="text-lg font-medium text-gray-900">Payout Items</h5>
         </div>
         <div class="p-6">
             <div class="overflow-x-auto">
-                <table class="table table-hover table-striped">
-                    <thead>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>ID</th>
-                            <th>Earner</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Commission Count</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earner</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Commission Count</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($payoutBatch->items as $item)
-                            <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>
-                                    <div>
-                                        <strong>{{ $item->earner->name }}</strong>
-                                        <br>
-                                        <small class="text-gray-500">ID: {{ $item->earner->id }}</small>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {{ $item->id }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                            <span class="text-sm font-medium text-gray-700">
+                                                {{ strtoupper(substr($item->earner->name, 0, 1)) }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>${{ number_format($item->amount, 2) }}</td>
-                                <td>
-                                    @if($item->status === 'queued')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Queued</span>
-                                    @elseif($item->status === 'sent')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Sent</span>
-                                    @elseif($item->status === 'paid')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span>
-                                    @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Failed</span>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{{ $item->earner->name }}</div>
+                                        <div class="text-sm text-gray-500">{{ $item->earner->email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ${{ number_format($item->amount, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                    {{ $item->status === 'queued' ? 'bg-yellow-100 text-yellow-800' : 
+                                       ($item->status === 'sent' ? 'bg-blue-100 text-blue-800' : 
+                                       ($item->status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')) }}">
+                                    {{ ucfirst($item->status) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ $item->commissions->count() }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ $item->created_at->format('M d, Y H:i') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900" onclick="viewPayoutItem({{ $item->id }})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    @if($item->status === 'failed')
+                                    <button class="text-red-600 hover:text-red-900" onclick="markFailed({{ $item->id }})">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                     @endif
-                                </td>
-                                <td>{{ count($item->commission_ids) }}</td>
-                                <td>{{ $item->created_at->format('M d, Y H:i') }}</td>
-                                <td>
-                                    <div class="flex space-x-2" class="flex space-x-2">
-                                        @if($item->status === 'queued')
-                                            <form method="POST" action="{{ route('admin.payouts.mark-sent', $item) }}" class="inline">
-                                                @csrf
-                                                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 transition-colors">
-                                                    <i class="fas fa-paper-plane"></i> Mark Sent
-                                                </button>
-                                            </form>
-                                        @elseif($item->status === 'sent')
-                                            <form method="POST" action="{{ route('admin.payouts.mark-paid', $item) }}" class="inline">
-                                                @csrf
-                                                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded hover:bg-green-600 transition-colors">
-                                                    <i class="fas fa-check"></i> Mark Paid
-                                                </button>
-                                            </form>
-                                            <button type="button" class="inline-flex items-center px-3 py-1.5 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600 transition-colors" onclick="showMarkFailedModal({{ $item->id }})">
-                                                <i class="fas fa-times"></i> Mark Failed
-                                            </button>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="7" class="text-center">No payout items found.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">No payout items found.</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -160,28 +177,50 @@
     </div>
 </div>
 
-<!-- Mark Failed Modal -->
-<div class="modal fade" id="markFailedModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="markFailedForm" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Mark Payout as Failed</h5>
-                    <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-gray-700 hover:text-gray-900" onclick="this.parentElement.remove()"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Reason for Failure</label>
-                        <textarea name="reason" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" rows="3" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="inline-flex items-center px-4 py-2 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors" onclick="this.parentElement.remove()">Cancel</button>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition-colors">Mark Failed</button>
-                </div>
-            </form>
+<!-- Payout Item Details Modal -->
+<div id="payoutItemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">Payout Item Details</h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" onclick="closeModal('payoutItemModal')">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
+        
+        <div id="payoutItemContent">
+            <!-- Content will be loaded here -->
+        </div>
+        
+        <div class="flex items-center justify-end pt-6 border-t border-gray-200">
+            <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200" onclick="closeModal('payoutItemModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mark Failed Modal -->
+<div id="markFailedModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">Mark as Failed</h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" onclick="closeModal('markFailedModal')">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form id="markFailedForm">
+            @csrf
+            <div class="space-y-4">
+                <div>
+                    <label for="failureReason" class="block text-sm font-medium text-gray-700 mb-2">Reason for Failure</label>
+                    <textarea name="reason" id="failureReason" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" required></textarea>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200" onclick="closeModal('markFailedModal')">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors duration-200">Mark as Failed</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -189,9 +228,67 @@
 
 @push('scripts')
 <script>
-function showMarkFailedModal(itemId) {
-    document.getElementById('markFailedForm').action = `/admin/payouts/items/${itemId}/mark-failed`;
-    new bootstrap.Modal(document.getElementById('markFailedModal')).show();
+function viewPayoutItem(itemId) {
+    // Load payout item details via AJAX
+    fetch(`/admin/payout-items/${itemId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('payoutItemContent').innerHTML = data.html;
+                document.getElementById('payoutItemModal').classList.remove('hidden');
+            } else {
+                alert('Error loading payout item details');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error loading payout item details');
+        });
 }
+
+function markFailed(itemId) {
+    document.getElementById('markFailedForm').action = `/admin/payout-items/${itemId}/mark-failed`;
+    document.getElementById('markFailedModal').classList.remove('hidden');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+// Handle mark failed form submission
+document.getElementById('markFailedForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Payout item marked as failed successfully');
+            closeModal('markFailedModal');
+            window.location.reload();
+        } else {
+            alert('Error marking payout item as failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error marking payout item as failed');
+    });
+});
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('fixed')) {
+        event.target.classList.add('hidden');
+    }
+});
 </script>
 @endpush

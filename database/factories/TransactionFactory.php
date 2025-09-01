@@ -37,7 +37,6 @@ class TransactionFactory extends Factory
             'meta' => [
                 'plan' => $this->faker->randomElement(['monthly', 'annual']),
                 'duration_days' => $this->faker->randomElement([30, 365]),
-                'payment_method' => $this->faker->randomElement(['crypto', 'manual']),
             ],
         ];
     }

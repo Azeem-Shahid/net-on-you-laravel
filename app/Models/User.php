@@ -199,21 +199,38 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Check if user has special access (user ID 1 or direct referral of user ID 1)
+     * Check if user has special access (founder or direct referral of founder)
      */
     public function hasSpecialAccess(): bool
     {
-        // User ID 1 has special access
-        if ($this->id === 1) {
+        $founderId = $this->getFounderId();
+        
+        // Founder has special access
+        if ($this->id === $founderId) {
             return true;
         }
 
-        // Direct referrals of user ID 1 have special access
-        if ($this->referrer_id === 1) {
+        // Direct referrals of founder have special access
+        if ($this->referrer_id === $founderId) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get the founder's user ID (first created user)
+     */
+    public function getFounderId(): int
+    {
+        static $founderId = null;
+        
+        if ($founderId === null) {
+            $founder = static::orderBy('id')->first();
+            $founderId = $founder ? $founder->id : 1;
+        }
+        
+        return $founderId;
     }
 
     /**
@@ -237,11 +254,13 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getFreeAccessReason(): ?string
     {
-        if ($this->id === 1) {
+        $founderId = $this->getFounderId();
+        
+        if ($this->id === $founderId) {
             return 'Network Founder - Free Access Granted';
         }
         
-        if ($this->referrer_id === 1) {
+        if ($this->referrer_id === $founderId) {
             return 'Direct Referral of Network Founder - Free Access Granted';
         }
         

@@ -96,6 +96,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/api/magazines/categories', [App\Http\Controllers\MagazineController::class, 'categories'])->name('api.magazines.categories');
 Route::get('/api/magazines/languages', [App\Http\Controllers\MagazineController::class, 'languages'])->name('api.magazines.languages');
 
+// Cron Job Routes (for cPanel cron jobs)
+Route::prefix('cron')->group(function () {
+    Route::get('/', [App\Http\Controllers\CronController::class, 'index'])->name('cron.index');
+    Route::get('/maintenance', [App\Http\Controllers\CronController::class, 'maintenance'])->name('cron.maintenance');
+    Route::get('/update', [App\Http\Controllers\CronController::class, 'update'])->name('cron.update');
+    Route::get('/business', [App\Http\Controllers\CronController::class, 'business'])->name('cron.business');
+    Route::get('/command/{command}', [App\Http\Controllers\CronController::class, 'executeSpecificCommand'])->name('cron.command');
+});
+
 // Contract Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/contract', [App\Http\Controllers\ContractController::class, 'show'])->name('contract.show');

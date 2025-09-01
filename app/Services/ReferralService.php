@@ -251,6 +251,21 @@ class ReferralService
         $pending = $query->clone()->where('payout_status', 'pending')->sum('amount');
         $paid = $query->clone()->where('payout_status', 'paid')->sum('amount');
 
+        // Get breakdown by level for current month
+        $levelBreakdown = [];
+        for ($level = 1; $level <= 6; $level++) {
+            $levelCommissions = Commission::where('earner_user_id', $userId)
+                ->where('month', $month)
+                ->where('level', $level)
+                ->get();
+
+            $levelBreakdown['level_' . $level] = [
+                'users' => $levelCommissions->count(),
+                'amount' => $levelCommissions->sum('amount'),
+                'currency' => 'USDT'
+            ];
+        }
+
         return [
             'month' => $month,
             'eligible' => $eligible,
@@ -258,6 +273,12 @@ class ReferralService
             'pending' => $pending,
             'paid' => $paid,
             'total' => $eligible + $ineligible,
+            'level_1' => $levelBreakdown['level_1'],
+            'level_2' => $levelBreakdown['level_2'],
+            'level_3' => $levelBreakdown['level_3'],
+            'level_4' => $levelBreakdown['level_4'],
+            'level_5' => $levelBreakdown['level_5'],
+            'level_6' => $levelBreakdown['level_6'],
         ];
     }
 }

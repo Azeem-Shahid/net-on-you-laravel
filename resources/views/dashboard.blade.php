@@ -112,9 +112,26 @@
                 </div>
             </div>
             
-            <!-- Commission Breakdown -->
+            <!-- Commission Level Breakdown -->
             <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h3 class="text-lg font-medium text-gray-800 mb-3">This Month's Breakdown</h3>
+                <h3 class="text-lg font-medium text-gray-800 mb-3">RESULTS FOR THE CURRENT MONTH:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+                    @for($level = 1; $level <= 6; $level++)
+                        <div class="p-3 bg-white rounded-lg border border-gray-200">
+                            <div class="text-lg font-bold text-[#1d003f]">{{ $commissionBreakdown['level_' . $level]['users'] ?? 0 }}</div>
+                            <div class="text-sm text-gray-600">Level {{ $level }} Users</div>
+                            <div class="text-lg font-bold text-[#00ff00] mt-1">
+                                {{ $commissionBreakdown['level_' . $level]['currency'] ?? 'USDT' }} {{ number_format($commissionBreakdown['level_' . $level]['amount'] ?? 0, 2) }}
+                            </div>
+                            <div class="text-xs text-gray-500">ACCUMULATED</div>
+                        </div>
+                    @endfor
+                </div>
+            </div>
+            
+            <!-- Commission Status Breakdown -->
+            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                <h3 class="text-lg font-medium text-gray-800 mb-3">This Month's Status</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div>
                         <div class="text-2xl font-bold text-[#00ff00]">${{ number_format($commissionBreakdown['eligible'], 2) }}</div>

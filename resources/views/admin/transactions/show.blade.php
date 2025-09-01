@@ -23,72 +23,72 @@
         <div class="lg:col-span-1">
             <div class="bg-white rounded-lg shadow-lg p-6">
                     <div class="text-center mb-3">
-                        <div class="avatar-lg mx-auto mb-3">
-                            <div class="avatar-title bg-{{ $transaction->status === 'completed' ? 'success' : ($transaction->status === 'pending' ? 'warning' : 'danger') }} text-white rounded">
-                                <i class="mdi mdi-{{ $transaction->status === 'completed' ? 'check-circle' : ($transaction->status === 'pending' ? 'clock' : 'close-circle') }} font-24"></i>
+                        <div class="w-16 h-16 mx-auto mb-3">
+                            <div class="w-full h-full bg-{{ $transaction->status === 'completed' ? 'green' : ($transaction->status === 'pending' ? 'yellow' : 'red') }}-500 text-white rounded-full flex items-center justify-center">
+                                <i class="mdi mdi-{{ $transaction->status === 'completed' ? 'check-circle' : ($transaction->status === 'pending' ? 'clock' : 'close-circle') }} text-2xl"></i>
                             </div>
                         </div>
-                        <h4 class="mb-1">{{ $transaction->currency }} {{ number_format($transaction->amount, 2) }}</h4>
+                        <h4 class="mb-1 text-xl font-semibold text-gray-900">{{ $transaction->currency }} {{ number_format($transaction->amount, 2) }}</h4>
                         <p class="text-gray-500">Transaction #{{ $transaction->id }}</p>
                         
                         <div class="mb-3">
-                            <span class="badge bg-{{ $transaction->status === 'completed' ? 'success' : ($transaction->status === 'pending' ? 'warning' : 'danger') }} fs-6">
+                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $transaction->status === 'completed' ? 'green' : ($transaction->status === 'pending' ? 'yellow' : 'red') }}-100 text-{{ $transaction->status === 'completed' ? 'green' : ($transaction->status === 'pending' ? 'yellow' : 'red') }}-800">
                                 {{ ucfirst($transaction->status) }}
                             </span>
                         </div>
                     </div>
 
-                    <hr>
+                    <hr class="my-4">
 
                     <div class="mt-3">
-                        <h6 class="text-uppercase">Transaction Information</h6>
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Gateway</p>
-                                <p class="mb-3">{{ ucfirst($transaction->gateway) }}</p>
+                        <h6 class="text-sm font-medium text-gray-900 uppercase tracking-wide mb-4">Transaction Information</h6>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Gateway</p>
+                                <p class="text-sm font-medium text-gray-900">{{ ucfirst($transaction->gateway) }}</p>
                             </div>
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Currency</p>
-                                <p class="mb-3">{{ strtoupper($transaction->currency) }}</p>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Transaction Hash</p>
-                                <p class="mb-3 text-break font-monospace small">{{ $transaction->transaction_hash ?? 'N/A' }}</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Reference ID</p>
-                                <p class="mb-3">{{ $transaction->reference_id ?? 'N/A' }}</p>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Currency</p>
+                                <p class="text-sm font-medium text-gray-900">{{ strtoupper($transaction->currency) }}</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Created Date</p>
-                                <p class="mb-3">{{ $transaction->created_at->format('M d, Y H:i') }}</p>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Transaction Hash</p>
+                                <p class="text-sm font-mono text-gray-900 break-all">{{ $transaction->transaction_hash ?? 'N/A' }}</p>
                             </div>
-                            <div class="col-6">
-                                <p class="mb-1 text-muted">Updated Date</p>
-                                <p class="mb-3">{{ $transaction->updated_at->format('M d, Y H:i') }}</p>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Reference ID</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->reference_id ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Created Date</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->created_at->format('M d, Y H:i') }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Updated Date</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->updated_at->format('M d, Y H:i') }}</p>
                             </div>
                         </div>
 
                         @if($transaction->completed_at)
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div class="col-12">
-                                <p class="mb-1 text-muted">Completed Date</p>
-                                <p class="mb-3">{{ $transaction->completed_at->format('M d, Y H:i') }}</p>
+                        <div class="mt-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Completed Date</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->completed_at->format('M d, Y H:i') }}</p>
                             </div>
                         </div>
                         @endif
 
                         @if($transaction->reviewed_at)
-                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div class="col-12">
-                                <p class="mb-1 text-muted">Reviewed Date</p>
-                                <p class="mb-3">{{ $transaction->reviewed_at->format('M d, Y H:i') }}</p>
+                        <div class="mt-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Reviewed Date</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->reviewed_at->format('M d, Y H:i') }}</p>
                             </div>
                         </div>
                         @endif
@@ -98,252 +98,238 @@
                         <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center justify-center" 
                                 onclick="showStatusUpdateModal()">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                             </svg>
                             Update Status
                         </button>
-                        
-                        @if(!$transaction->reviewed_at)
-                        <button type="button" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center justify-center" 
-                                onclick="markReviewed({{ $transaction->id }})">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Mark as Reviewed
-                        </button>
-                        @endif
-
-                        <a href="{{ route('admin.transactions.index') }}" class="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center justify-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                            </svg>
-                            Back to Transactions
-                        </a>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- User & Commission Details -->
+        <!-- User Information Card -->
         <div class="lg:col-span-2">
             <div class="bg-white rounded-lg shadow-lg p-6">
-                <div class="border-b border-gray-200 mb-6">
-                    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                        <button class="border-b-2 border-blue-500 text-blue-600 whitespace-nowrap py-2 px-1 text-sm font-medium" id="user-tab" onclick="switchTab('user')">
-                            User Information
-                        </button>
-                        <button class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 text-sm font-medium" id="commissions-tab" onclick="switchTab('commissions')">
-                            Commissions ({{ $transaction->commissions->count() }})
-                        </button>
-                        <button class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 text-sm font-medium" id="history-tab" onclick="switchTab('history')">
-                            Transaction History
-                        </button>
-                    </nav>
-
-                    <div class="tab-content" id="transactionTabsContent">
-                        <!-- User Information Tab -->
-                        <div class="tab-pane active" id="user" role="tabpanel">
-                            <div class="mt-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <h6 class="text-lg font-medium text-gray-900 mb-4">User Details</h6>
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="avatar-sm me-3">
-                                                        <div class="avatar-title bg-primary rounded-circle text-white">
-                                                            {{ strtoupper(substr($transaction->user->name, 0, 1)) }}
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <h6 class="mb-1">{{ $transaction->user->name }}</h6>
-                                                        <p class="text-muted mb-0">{{ $transaction->user->email }}</p>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                                                    <div class="col-6">
-                                                        <p class="mb-1 text-muted">Status</p>
-                                                        <span class="badge bg-{{ $transaction->user->status === 'active' ? 'success' : ($transaction->user->status === 'blocked' ? 'danger' : 'warning') }}">
-                                                            {{ ucfirst($transaction->user->status) }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <p class="mb-1 text-muted">Joined</p>
-                                                        <p class="mb-0">{{ $transaction->user->created_at->format('M d, Y') }}</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mt-3">
-                                                    <a href="{{ route('admin.users.show', $transaction->user) }}" class="inline-flex items-center px-3 py-1.5 bg-transparent border border-action text-action text-sm font-medium rounded hover:bg-action hover:text-primary transition-colors">
-                                                        <i class="mdi mdi-eye"></i> View User Profile
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="lg:col-span-6">
-                                        <div class="card border-0 bg-light">
-                                            <div class="p-6">
-                                                <h6 class="card-title">Subscription Status</h6>
-                                                @if($transaction->user->subscription_end_date)
-                                                    @if($transaction->user->subscription_end_date > now())
-                                                        <div class="text-success mb-2">
-                                                            <i class="mdi mdi-check-circle"></i> Active Subscription
-                                                        </div>
-                                                        <p class="mb-1 text-muted">Expires: {{ $transaction->user->subscription_end_date->format('M d, Y') }}</p>
-                                                    @else
-                                                        <div class="text-danger mb-2">
-                                                            <i class="mdi mdi-close-circle"></i> Expired Subscription
-                                                        </div>
-                                                        <p class="mb-1 text-muted">Expired: {{ $transaction->user->subscription_end_date->format('M d, Y') }}</p>
-                                                    @endif
-                                                @else
-                                                    <div class="text-muted mb-2">
-                                                        <i class="mdi mdi-information"></i> No Subscription
-                                                    </div>
-                                                @endif
-
-                                                <div class="mt-3">
-                                                    <p class="mb-1 text-muted">Wallet Address</p>
-                                                    <p class="mb-0 font-monospace small">{{ $transaction->user->wallet_address ?? 'Not set' }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                <h5 class="text-lg font-medium text-gray-900 mb-4">User Information</h5>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h6 class="text-sm font-medium text-gray-700 mb-3">Customer Details</h6>
+                        <div class="space-y-3">
+                            <div>
+                                <p class="text-sm text-gray-500">Name</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->user->name }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Email</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->user->email }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">User ID</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $transaction->user->id }}</p>
                             </div>
                         </div>
-
-                        <!-- Commissions Tab -->
-                        <div class="tab-pane fade" id="commissions" role="tabpanel">
-                            <div class="table-responsive mt-3">
-                                <table class="table table-centered table-hover mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>User</th>
-                                            <th>Amount</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($transaction->commissions as $commission)
-                                        <tr>
-                                            <td>{{ $commission->id }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.users.show', $commission->user) }}" class="text-decoration-none">
-                                                    {{ $commission->user->name }}
-                                                </a>
-                                            </td>
-                                            <td>{{ $commission->amount }}</td>
-                                            <td>{{ ucfirst($commission->type) }}</td>
-                                            <td>
-                                                <span class="badge bg-{{ $commission->payout_status === 'paid' ? 'success' : 'warning' }}">
-                                                    {{ ucfirst($commission->payout_status) }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $commission->created_at->format('M d, Y H:i') }}</td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="6" class="text-center text-muted">No commissions generated from this transaction</td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Transaction History Tab -->
-                        <div class="tab-pane fade" id="history" role="tabpanel">
-                            <div class="mt-3">
-                                <div class="timeline-alt pb-0">
-                                    <div class="timeline-item">
-                                        <i class="mdi mdi-circle bg-primary-lighten text-primary timeline-icon"></i>
-                                        <div class="timeline-item-info">
-                                            <a href="#" class="text-primary fw-bold mb-1 d-block">Transaction Created</a>
-                                            <small class="text-gray-500">{{ $transaction->created_at->diffForHumans() }}</small>
-                                            <p class="text-muted mb-0">Transaction initiated with {{ $transaction->gateway }} gateway</p>
-                                        </div>
-                                    </div>
-
-                                    @if($transaction->status !== 'pending')
-                                    <div class="timeline-item">
-                                        <i class="mdi mdi-circle bg-{{ $transaction->status === 'completed' ? 'success' : 'danger' }}-lighten text-{{ $transaction->status === 'completed' ? 'success' : 'danger' }} timeline-icon"></i>
-                                        <div class="timeline-item-info">
-                                            <a href="#" class="text-{{ $transaction->status === 'completed' ? 'success' : 'danger' }} fw-bold mb-1 d-block">
-                                                Status Updated to {{ ucfirst($transaction->status) }}
-                                            </a>
-                                            <small class="text-gray-500">{{ $transaction->updated_at->diffForHumans() }}</small>
-                                            @if($transaction->status === 'completed')
-                                                <p class="text-muted mb-0">Payment successfully processed</p>
-                                            @else
-                                                <p class="text-muted mb-0">Transaction failed or was cancelled</p>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    @endif
-
-                                    @if($transaction->completed_at)
-                                    <div class="timeline-item">
-                                        <i class="mdi mdi-circle bg-success-lighten text-success timeline-icon"></i>
-                                        <div class="timeline-item-info">
-                                            <a href="#" class="text-success fw-bold mb-1 d-block">Transaction Completed</a>
-                                            <small class="text-gray-500">{{ $transaction->completed_at->diffForHumans() }}</small>
-                                            <p class="text-muted mb-0">Payment confirmed and processed</p>
-                                        </div>
-                                    </div>
-                                    @endif
-
-                                    @if($transaction->reviewed_at)
-                                    <div class="timeline-item">
-                                        <i class="mdi mdi-circle bg-info-lighten text-info timeline-icon"></i>
-                                        <div class="timeline-item-info">
-                                            <a href="#" class="text-info fw-bold mb-1 d-block">Marked as Reviewed</a>
-                                            <small class="text-gray-500">{{ $transaction->reviewed_at->diffForHumans() }}</small>
-                                            <p class="text-muted mb-0">Admin reviewed this transaction</p>
-                                        </div>
-                                    </div>
-                                    @endif
+                    </div>
+                    
+                    <div>
+                        <h6 class="text-sm font-medium text-gray-700 mb-3">Subscription Details</h6>
+                        <div class="space-y-3">
+                            @if($transaction->subscription)
+                                <div>
+                                    <p class="text-sm text-gray-500">Plan</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ $transaction->subscription->plan->name ?? 'N/A' }}</p>
                                 </div>
-                            </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Status</p>
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                        {{ $transaction->subscription->status === 'active' ? 'bg-green-100 text-green-800' : 
+                                           ($transaction->subscription->status === 'expired' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                        {{ ucfirst($transaction->subscription->status) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Expires</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ $transaction->subscription->expires_at ? $transaction->subscription->expires_at->format('M d, Y') : 'N/A' }}</p>
+                                </div>
+                            @else
+                                <p class="text-sm text-gray-500">No subscription associated</p>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Additional Information -->
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Payment Details -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h5 class="text-lg font-medium text-gray-900 mb-4">Payment Details</h5>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Payment Method</p>
+                        <p class="text-sm font-medium text-gray-900">{{ ucfirst($transaction->gateway) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Amount</p>
+                        <p class="text-sm font-medium text-gray-900">{{ $transaction->currency }} {{ number_format($transaction->amount, 2) }}</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Fee</p>
+                        <p class="text-sm font-medium text-gray-900">{{ $transaction->currency }} {{ number_format($transaction->fee ?? 0, 2) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Net Amount</p>
+                        <p class="text-sm font-medium text-gray-900">{{ $transaction->currency }} {{ number_format(($transaction->amount - ($transaction->fee ?? 0)), 2) }}</p>
+                    </div>
+                </div>
+                
+                @if($transaction->metadata)
+                <div>
+                    <p class="text-sm text-gray-500 mb-2">Additional Data</p>
+                    <div class="bg-gray-50 p-3 rounded-md">
+                        <pre class="text-xs text-gray-700">{{ json_encode($transaction->metadata, JSON_PRETTY_PRINT) }}</pre>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Subscription Status -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h6 class="text-lg font-medium text-gray-900 mb-4">Subscription Status</h6>
+            
+            @if($transaction->subscription)
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Current Status</span>
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                            {{ $transaction->subscription->status === 'active' ? 'bg-green-100 text-green-800' : 
+                               ($transaction->subscription->status === 'expired' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                            {{ ucfirst($transaction->subscription->status) }}
+                        </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Plan</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $transaction->subscription->plan->name ?? 'N/A' }}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Started</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $transaction->subscription->created_at->format('M d, Y') }}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Expires</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $transaction->subscription->expires_at ? $transaction->subscription->expires_at->format('M d, Y') : 'N/A' }}</span>
+                    </div>
+                    
+                    @if($transaction->subscription->trial_ends_at)
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Trial Ends</span>
+                        <span class="text-sm font-medium text-gray-900">{{ $transaction->subscription->trial_ends_at->format('M d, Y') }}</span>
+                    </div>
+                    @endif
+                </div>
+            @else
+                <p class="text-sm text-gray-500">No subscription associated with this transaction.</p>
+            @endif
+        </div>
+    </div>
+
+    <!-- Transaction History -->
+    @if($transaction->relatedTransactions && $transaction->relatedTransactions->count() > 0)
+    <div class="mt-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h5 class="text-lg font-medium text-gray-900 mb-4">Related Transactions</h5>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($transaction->relatedTransactions as $relatedTransaction)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                #{{ $relatedTransaction->id }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ $relatedTransaction->currency }} {{ number_format($relatedTransaction->amount, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                    {{ $relatedTransaction->status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                       ($relatedTransaction->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                    {{ ucfirst($relatedTransaction->status) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ $relatedTransaction->created_at->format('M d, Y H:i') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{{ route('admin.transactions.show', $relatedTransaction->id) }}" 
+                                   class="text-blue-600 hover:text-blue-900">View</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 
 <!-- Status Update Modal -->
-<div class="modal fade" id="statusUpdateModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update Transaction Status</h5>
-                <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-gray-700 hover:text-gray-900" onclick="this.parentElement.remove()"></button>
-            </div>
-            <form id="statusUpdateForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="status" class="form-label">New Status</label>
-                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" id="status" name="status" required>
-                            <option value="">Select Status</option>
-                            <option value="pending" {{ $transaction->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="completed" {{ $transaction->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                            <option value="failed" {{ $transaction->status === 'failed' ? 'selected' : '' }}>Failed</option>
-                            <option value="cancelled" {{ $transaction->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="inline-flex items-center px-4 py-2 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors" onclick="this.parentElement.remove()">Cancel</button>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-action text-primary font-medium rounded-lg hover:bg-action/90 transition-colors">Update Status</button>
-                </div>
-            </form>
+<div id="statusUpdateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-medium text-gray-900">Update Transaction Status</h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" onclick="closeModal('statusUpdateModal')">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
+        
+        <form id="statusUpdateForm" method="POST" action="{{ route('admin.transactions.update-status', $transaction->id) }}">
+            @csrf
+            @method('PATCH')
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="newStatus" class="block text-sm font-medium text-gray-700 mb-2">New Status</label>
+                    <select name="status" id="newStatus" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select Status</option>
+                        <option value="pending" {{ $transaction->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="completed" {{ $transaction->status === 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="failed" {{ $transaction->status === 'failed' ? 'selected' : '' }}>Failed</option>
+                        <option value="cancelled" {{ $transaction->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="statusReason" class="block text-sm font-medium text-gray-700 mb-2">Reason (Optional)</label>
+                    <textarea name="reason" id="statusReason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter reason for status change..."></textarea>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200" onclick="closeModal('statusUpdateModal')">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200">Update Status</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -351,81 +337,48 @@
 
 @push('scripts')
 <script>
-function switchTab(tabName) {
-    // Hide all tab panes
-    document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.add('hidden');
-    });
-    
-    // Remove active state from all tabs
-    document.querySelectorAll('nav button').forEach(btn => {
-        btn.classList.remove('border-blue-500', 'text-blue-600');
-        btn.classList.add('border-transparent', 'text-gray-500');
-    });
-    
-    // Show selected tab pane
-    document.getElementById(tabName).classList.remove('hidden');
-    
-    // Activate selected tab
-    document.getElementById(tabName + '-tab').classList.remove('border-transparent', 'text-gray-500');
-    document.getElementById(tabName + '-tab').classList.add('border-blue-500', 'text-blue-600');
-}
-</script>
-<script>
 function showStatusUpdateModal() {
-    const modal = new bootstrap.Modal(document.getElementById('statusUpdateModal'));
-    modal.show();
+    document.getElementById('statusUpdateModal').classList.remove('hidden');
 }
 
-function markReviewed(transactionId) {
-    if (confirm('Mark this transaction as reviewed?')) {
-        fetch(`/admin/transactions/${transactionId}/mark-reviewed`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while processing your request.');
-        });
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('fixed')) {
+        event.target.classList.add('hidden');
     }
-}
+});
 
-// Status update form submission
+// Handle form submission
 document.getElementById('statusUpdateForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
-    const transactionId = {{ $transaction->id }};
     
-    fetch(`/admin/transactions/${transactionId}/status`, {
-        method: 'PUT',
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        },
-        body: formData
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            // Show success message
+            alert('Status updated successfully!');
+            // Reload page to show updated status
+            window.location.reload();
         } else {
-            alert('Error: ' + data.message);
+            alert('Error updating status: ' + data.message);
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while processing your request.');
+        alert('Error updating status');
     });
 });
 </script>

@@ -49,13 +49,25 @@ class Contract extends Model
 
     /**
      * Get the latest active contract for a specific language
+     * Falls back to English if the requested language is not available
      */
     public static function getLatestActive($language = 'en')
     {
-        return static::active()
+        // Try to get contract in requested language
+        $contract = static::active()
             ->byLanguage($language)
             ->orderBy('effective_date', 'desc')
             ->first();
+
+        // If not found and language is not English, fall back to English
+        if (!$contract && $language !== 'en') {
+            $contract = static::active()
+                ->byLanguage('en')
+                ->orderBy('effective_date', 'desc')
+                ->first();
+        }
+
+        return $contract;
     }
 
     /**

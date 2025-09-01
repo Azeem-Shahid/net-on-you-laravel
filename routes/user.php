@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     return redirect()->route('login');
-})->name('home');
+})->name('homepage');
 
 // Language switching (public route)
 Route::post('/language/switch', [App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');

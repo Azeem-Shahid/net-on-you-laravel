@@ -31,4 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'coinpayments' => [
+        'enabled' => env('COINPAYMENTS_ENABLED', false),
+        'merchant_id' => env('COINPAYMENTS_MERCHANT_ID'),
+        'public_key' => env('COINPAYMENTS_PUBLIC_KEY'),
+        'private_key' => env('COINPAYMENTS_PRIVATE_KEY'),
+        'ipn_secret' => env('COINPAYMENTS_IPN_SECRET'),
+        'ipn_url' => env('COINPAYMENTS_IPN_URL'),
+        'sandbox' => env('COINPAYMENTS_SANDBOX', false),
+        'currency2' => env('COINPAYMENTS_CURRENCY2', 'USDT.TRC20'),
+        'subscription_price' => env('SUBSCRIPTION_PRICE', '39.90'),
+    ],
+
 ];

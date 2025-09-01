@@ -47,6 +47,17 @@ class PayoutBatchItem extends Model
     }
 
     /**
+     * Get the first commission (for single commission payouts)
+     */
+    public function commission()
+    {
+        if (empty($this->commission_ids)) {
+            return null;
+        }
+        return Commission::find($this->commission_ids[0]);
+    }
+
+    /**
      * Check if item is queued
      */
     public function isQueued(): bool
