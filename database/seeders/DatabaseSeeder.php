@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             SecurityPolicySeeder::class,
             ContractSeeder::class,
             ScheduledCommandsSeeder::class,
+            EnhancedDummyDataSeeder::class, // Enhanced dummy data with User 1 referrals
         ]);
         
         $this->command->info('Database seeding completed successfully!');

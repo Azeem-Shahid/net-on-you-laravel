@@ -1,0 +1,694 @@
+# Net On You - Complete Admin Manual
+
+## Table of Contents
+1. [System Overview](#system-overview)
+2. [Getting Started](#getting-started)
+3. [Dashboard & Analytics](#dashboard--analytics)
+4. [User Management](#user-management)
+5. [Magazine Management](#magazine-management)
+6. [Payment & Transaction Management](#payment--transaction-management)
+7. [Subscription Management](#subscription-management)
+8. [Referral System Management](#referral-system-management)
+9. [Commission Management](#commission-management)
+10. [Payout Management](#payout-management)
+11. [Email & Communication Management](#email--communication-management)
+12. [Language & Translation Management](#language--translation-management)
+13. [Contract Management](#contract-management)
+14. [Security Management](#security-management)
+15. [System Administration](#system-administration)
+16. [Troubleshooting](#troubleshooting)
+
+---
+
+## System Overview
+
+Net On You is a comprehensive digital magazine subscription platform with advanced referral and commission systems. The admin panel provides complete control over all aspects of the platform.
+
+### Key Features
+- **Multi-language Support**: Full internationalization with translation management
+- **Referral System**: Advanced referral tracking and commission calculation
+- **Payment Integration**: CoinPayments and manual payment processing
+- **Email Automation**: Template-based email campaigns and notifications
+- **Security Management**: Role-based access control and security policies
+- **Analytics & Reporting**: Comprehensive business intelligence
+- **Cron Job Management**: Automated task scheduling and execution
+
+---
+
+## Getting Started
+
+### 1. Admin Login
+- **URL**: `https://yourdomain.com/admin/login`
+- **Default Credentials**: Set during initial setup
+- **Security**: Two-factor authentication recommended
+
+### 2. Dashboard Overview
+- **Main Dashboard**: `https://yourdomain.com/admin/dashboard`
+- **Analytics Dashboard**: `https://yourdomain.com/admin/analytics`
+- **Key Metrics**: User count, revenue, subscriptions, commissions
+
+---
+
+## Dashboard & Analytics
+
+### Main Dashboard
+**Access**: `https://yourdomain.com/admin/dashboard`
+
+#### Key Metrics Displayed:
+- Total Users
+- Active Subscriptions
+- Monthly Revenue
+- Pending Commissions
+- Recent Transactions
+- System Status
+
+#### Quick Actions:
+- View recent user registrations
+- Check pending payments
+- Monitor system alerts
+- Access quick reports
+
+### Analytics Dashboard
+**Access**: `https://yourdomain.com/admin/analytics`
+
+#### Available Reports:
+1. **KPI Dashboard**
+   - Revenue trends
+   - User growth
+   - Subscription metrics
+   - Commission payouts
+
+2. **Chart Data**
+   - Revenue charts
+   - User registration trends
+   - Payment success rates
+   - Geographic distribution
+
+3. **Export Options**
+   - CSV export
+   - PDF reports
+   - Custom date ranges
+
+#### Step-by-Step Analytics Usage:
+1. Navigate to Analytics dashboard
+2. Select report type (KPI, Charts, etc.)
+3. Choose date range
+4. Apply filters if needed
+5. Export or view results
+
+---
+
+## User Management
+
+### User List
+**Access**: `https://yourdomain.com/admin/users`
+
+#### User Operations:
+1. **View Users**
+   - Search by email, name, or ID
+   - Filter by status (active, blocked, verified)
+   - Sort by registration date, last login
+
+2. **User Details**
+   - Profile information
+   - Subscription status
+   - Transaction history
+   - Referral information
+
+3. **User Actions**
+   - **Block/Unblock User**: Toggle user access
+   - **Reset Password**: Send password reset email
+   - **Resend Verification**: Resend email verification
+   - **Reset Balance**: Clear user balance
+   - **Export Users**: Download user list
+
+#### Step-by-Step User Management:
+1. Navigate to Users section
+2. Use search/filter to find specific user
+3. Click on user to view details
+4. Perform required action
+5. Confirm action in popup
+
+### User Export
+**Access**: `https://yourdomain.com/admin/users/export`
+
+#### Export Options:
+- All users
+- Active users only
+- Users with subscriptions
+- Users with commissions
+- Custom date range
+
+---
+
+## Magazine Management
+
+### Magazine List
+**Access**: `https://yourdomain.com/admin/magazines`
+
+#### Magazine Operations:
+1. **Create New Magazine**
+   - Title and description
+   - Category selection
+   - Language settings
+   - File upload (PDF)
+   - Access permissions
+
+2. **Edit Magazine**
+   - Update information
+   - Upload new version
+   - Change access settings
+   - Modify categories
+
+3. **Magazine Actions**
+   - **Toggle Status**: Enable/disable magazine
+   - **Bulk Update**: Update multiple magazines
+   - **Download**: Download magazine file
+   - **Upload Version**: Add new version
+
+#### Step-by-Step Magazine Creation:
+1. Click "Create New Magazine"
+2. Fill in basic information:
+   - Title (required)
+   - Description
+   - Category
+   - Language
+3. Upload PDF file
+4. Set access permissions
+5. Save magazine
+
+### Magazine Categories
+- Business & Finance
+- Technology
+- Health & Wellness
+- Lifestyle
+- Education
+- Custom categories
+
+---
+
+## Payment & Transaction Management
+
+### Transaction List
+**Access**: `https://yourdomain.com/admin/transactions`
+
+#### Transaction Operations:
+1. **View Transactions**
+   - Filter by status (pending, completed, failed)
+   - Search by user or transaction ID
+   - Sort by date, amount, status
+
+2. **Transaction Details**
+   - Payment method used
+   - User information
+   - Payment proof (if manual)
+   - Commission calculations
+
+3. **Transaction Actions**
+   - **Update Status**: Change transaction status
+   - **Mark Reviewed**: Mark as reviewed by admin
+   - **Export Transactions**: Download transaction list
+
+### Payment Tracking
+**Access**: `https://yourdomain.com/admin/payment-tracking`
+
+#### Features:
+- Real-time payment monitoring
+- Manual payment verification
+- Payment confirmation emails
+- Referrer notification system
+
+#### Step-by-Step Payment Verification:
+1. Navigate to Payment Tracking
+2. Find pending transaction
+3. Review payment proof
+4. Mark as reviewed
+5. Send confirmation email
+6. Process commission calculations
+
+---
+
+## Subscription Management
+
+### Subscription List
+**Access**: `https://yourdomain.com/admin/subscriptions`
+
+#### Subscription Operations:
+1. **View Subscriptions**
+   - Filter by status (active, expired, cancelled)
+   - Search by user
+   - Sort by start date, end date
+
+2. **Subscription Actions**
+   - **Toggle Status**: Enable/disable subscription
+   - **Extend Subscription**: Add time to subscription
+   - **Cancel Subscription**: Cancel active subscription
+   - **Bulk Update**: Update multiple subscriptions
+
+### Advanced Subscription Management
+**Access**: `https://yourdomain.com/admin/subscription-management`
+
+#### Features:
+1. **Expiration Alerts**
+   - View subscriptions expiring soon
+   - Send expiration notifications
+   - Automatic renewal reminders
+
+2. **Admin User Creation**
+   - Create admin users for testing
+   - Set subscription periods
+   - Assign special permissions
+
+3. **Notification System**
+   - Payment confirmation emails
+   - Referrer notifications
+   - Expiration warnings
+
+#### Step-by-Step Subscription Extension:
+1. Find user subscription
+2. Click "Extend Subscription"
+3. Select extension period
+4. Choose payment method
+5. Confirm extension
+6. Send notification email
+
+---
+
+## Referral System Management
+
+### Referral Overview
+**Access**: `https://yourdomain.com/admin/referrals`
+
+#### Referral Features:
+- Referral tree visualization
+- Commission tracking
+- Referral validation
+- Export capabilities
+
+### Referral Validation
+**Access**: `https://yourdomain.com/admin/referral-validation`
+
+#### Validation Tools:
+1. **System Validation**
+   - Validate referral relationships
+   - Check commission calculations
+   - Verify referral integrity
+
+2. **Referral Tree View**
+   - Visual representation of referrals
+   - Multi-level referral tracking
+   - Commission distribution view
+
+3. **Test System**
+   - Test referral calculations
+   - Validate commission rates
+   - Check referral bonuses
+
+#### Step-by-Step Referral Validation:
+1. Navigate to Referral Validation
+2. Select user to validate
+3. Run system validation
+4. Review referral tree
+5. Check commission calculations
+6. Export validation report
+
+---
+
+## Commission Management
+
+### Commission List
+**Access**: `https://yourdomain.com/admin/commissions`
+
+#### Commission Operations:
+1. **View Commissions**
+   - Filter by status (pending, paid, void)
+   - Search by user
+   - Sort by amount, date
+
+2. **Commission Actions**
+   - **Adjust Commission**: Modify commission amount
+   - **Void Commission**: Cancel commission
+   - **Restore Commission**: Restore voided commission
+   - **Create Payout Batch**: Group commissions for payout
+
+### Advanced Commission Management
+**Access**: `https://yourdomain.com/admin/commission-management`
+
+#### Features:
+1. **Monthly Breakdown**
+   - Monthly commission reports
+   - Eligibility calculations
+   - Payout scheduling
+
+2. **Payout Processing**
+   - Create payout batches
+   - Mark payouts as sent
+   - Track payment status
+
+#### Step-by-Step Commission Processing:
+1. Navigate to Commission Management
+2. Review monthly breakdown
+3. Process eligibility calculations
+4. Create payout batch
+5. Mark payouts as sent
+6. Update payment status
+
+---
+
+## Payout Management
+
+### Payout List
+**Access**: `https://yourdomain.com/admin/payouts`
+
+#### Payout Operations:
+1. **View Payouts**
+   - Filter by status (pending, processing, completed)
+   - Search by batch ID
+   - Sort by date, amount
+
+2. **Payout Actions**
+   - **Start Processing**: Begin payout processing
+   - **Mark as Sent**: Mark individual payouts as sent
+   - **Mark as Paid**: Confirm payment received
+   - **Mark as Failed**: Handle failed payouts
+   - **Close Batch**: Finalize payout batch
+
+#### Step-by-Step Payout Processing:
+1. Navigate to Payouts section
+2. Select payout batch
+3. Start processing
+4. Mark individual payouts as sent
+5. Update payment status
+6. Close batch when complete
+
+---
+
+## Email & Communication Management
+
+### Email Templates
+**Access**: `https://yourdomain.com/admin/email-templates`
+
+#### Template Operations:
+1. **Create Template**
+   - Template name and subject
+   - HTML content with variables
+   - Language selection
+   - Category assignment
+
+2. **Template Actions**
+   - **Send Test**: Test template with sample data
+   - **Duplicate**: Create copy of template
+   - **Edit**: Modify template content
+
+#### Available Variables:
+- `{{user_name}}` - User's name
+- `{{user_email}}` - User's email
+- `{{subscription_end_date}}` - Subscription end date
+- `{{commission_amount}}` - Commission amount
+- `{{referral_code}}` - User's referral code
+
+### Email Campaigns
+**Access**: `https://yourdomain.com/admin/campaigns`
+
+#### Campaign Features:
+1. **Create Campaign**
+   - Select template
+   - Choose recipients
+   - Schedule sending
+   - Track results
+
+2. **Campaign Management**
+   - Preview campaign
+   - Get recipient count
+   - Monitor delivery status
+   - View user statistics
+
+### Email Logs
+**Access**: `https://yourdomain.com/admin/email-logs`
+
+#### Log Features:
+- View all sent emails
+- Check delivery status
+- Retry failed emails
+- Export email logs
+- Clear old logs
+
+---
+
+## Language & Translation Management
+
+
+
+## Contract Management
+
+### Contract List
+**Access**: `https://yourdomain.com/admin/contracts`
+
+#### Contract Operations:
+1. **Create Contract**
+   - Contract title
+   - Content (HTML/text)
+   - Language selection
+   - Active status
+
+2. **Contract Actions**
+   - **Toggle Status**: Enable/disable contract
+   - **Import**: Import contracts from file
+   - **Export**: Download contract
+
+#### Step-by-Step Contract Creation:
+1. Click "Create New Contract"
+2. Enter contract title
+3. Add contract content
+4. Select language
+5. Set active status
+6. Save contract
+
+---
+
+## Security Management
+
+### Security Policies
+**Access**: `https://yourdomain.com/admin/security`
+
+#### Security Features:
+1. **Password Policies**
+   - Minimum length
+   - Complexity requirements
+   - Expiration settings
+
+2. **Session Management**
+   - Session timeout
+   - Concurrent sessions
+   - IP restrictions
+
+3. **Access Control**
+   - Login attempts
+   - Account lockout
+   - Two-factor authentication
+
+### Role Management
+**Access**: `https://yourdomain.com/admin/roles`
+
+#### Role Operations:
+1. **Create Role**
+   - Role name
+   - Permissions assignment
+   - Description
+
+2. **Role Actions**
+   - **Edit Permissions**: Modify role permissions
+   - **Delete Role**: Remove role
+   - **View Permissions**: List all permissions
+
+### API Key Management
+**Access**: `https://yourdomain.com/admin/api-keys`
+
+#### API Key Operations:
+1. **Generate API Key**
+   - Key name
+   - Permissions
+   - Expiration date
+
+2. **Key Actions**
+   - **Toggle Status**: Enable/disable key
+   - **Regenerate**: Create new key
+   - **Delete**: Remove key
+
+### Session Management
+**Access**: `https://yourdomain.com/admin/sessions`
+
+#### Session Operations:
+1. **View Active Sessions**
+   - Admin sessions
+   - User sessions
+   - Session details
+
+2. **Session Actions**
+   - **Revoke Session**: End specific session
+   - **Revoke All**: End all sessions for user
+   - **Cleanup Expired**: Remove expired sessions
+
+---
+
+## System Administration
+
+### Settings Management
+**Access**: `https://yourdomain.com/admin/settings`
+
+#### System Settings:
+1. **General Settings**
+   - Site name
+   - Contact information
+   - Default language
+
+2. **Payment Settings**
+   - Commission rates
+   - Referral bonuses
+   - Minimum payout amounts
+
+3. **Email Settings**
+   - SMTP configuration
+   - Default sender
+   - Email templates
+
+### Command Scheduler
+**Access**: `https://yourdomain.com/admin/command-scheduler`
+
+#### Scheduler Features:
+1. **Scheduled Commands**
+   - View all scheduled commands
+   - Run commands manually
+   - Schedule new commands
+
+2. **Command Groups**
+   - System maintenance
+   - Payment processing
+   - Email sending
+   - Report generation
+
+3. **Command Logs**
+   - View execution logs
+   - Export logs
+   - Clear old logs
+
+#### Step-by-Step Command Scheduling:
+1. Navigate to Command Scheduler
+2. Select command group
+3. Choose specific command
+4. Set schedule (cron expression)
+5. Save schedule
+6. Monitor execution
+
+### Cron Job Management
+**Access**: `https://yourdomain.com/admin/cron-jobs`
+
+#### Cron Job Features:
+1. **Business Commands**
+   - Process payments
+   - Calculate commissions
+   - Send notifications
+   - Generate reports
+
+2. **Command History**
+   - View execution history
+   - Check command status
+   - Monitor performance
+
+3. **Setup Guide**
+   - Server cron setup
+   - Command configuration
+   - Troubleshooting
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+#### 1. Payment Processing Issues
+**Problem**: Payments not being processed
+**Solution**:
+1. Check CoinPayments configuration
+2. Verify webhook settings
+3. Review payment logs
+4. Test payment flow
+
+#### 2. Email Delivery Issues
+**Problem**: Emails not being sent
+**Solution**:
+1. Check SMTP settings
+2. Verify email templates
+3. Review email logs
+4. Test email sending
+
+#### 3. Commission Calculation Issues
+**Problem**: Incorrect commission calculations
+**Solution**:
+1. Validate referral system
+2. Check commission rates
+3. Review transaction data
+4. Run system validation
+
+#### 4. User Access Issues
+**Problem**: Users cannot access content
+**Solution**:
+1. Check subscription status
+2. Verify user permissions
+3. Review access logs
+4. Test user flow
+
+### Support Resources
+- **System Logs**: Check Laravel logs for errors
+- **Email Logs**: Review email delivery issues
+- **Payment Logs**: Monitor payment processing
+- **User Activity**: Track user behavior
+
+### Emergency Procedures
+1. **System Backup**: Always backup before major changes
+2. **Rollback Plan**: Keep previous versions ready
+3. **Contact Information**: Maintain support contacts
+4. **Documentation**: Keep procedures documented
+
+---
+
+## Quick Reference
+
+### Important URLs
+- **Admin Login**: `/admin/login`
+- **Dashboard**: `/admin/dashboard`
+- **Analytics**: `/admin/analytics`
+- **Users**: `/admin/users`
+- **Magazines**: `/admin/magazines`
+- **Transactions**: `/admin/transactions`
+- **Subscriptions**: `/admin/subscriptions`
+- **Referrals**: `/admin/referrals`
+- **Commissions**: `/admin/commissions`
+- **Payouts**: `/admin/payouts`
+- **Email Templates**: `/admin/email-templates`
+- **Languages**: `/admin/languages`
+- **Settings**: `/admin/settings`
+- **Security**: `/admin/security`
+- **Command Scheduler**: `/admin/command-scheduler`
+- **Cron Jobs**: `/admin/cron-jobs`
+
+### Key Commands
+- **Clear Cache**: `php artisan cache:clear`
+- **Run Migrations**: `php artisan migrate`
+- **Generate Reports**: `php artisan reports:generate`
+- **Process Payments**: `php artisan payments:process`
+- **Calculate Commissions**: `php artisan commissions:calculate`
+
+### Security Checklist
+- [ ] Regular password updates
+- [ ] Two-factor authentication enabled
+- [ ] Session timeout configured
+- [ ] API keys secured
+- [ ] Logs monitored
+- [ ] Backups scheduled
+- [ ] Updates applied
+- [ ] Security policies enforced
+
+---
+
+*This manual covers all major admin functions. For specific technical details, refer to the system documentation and code comments.*

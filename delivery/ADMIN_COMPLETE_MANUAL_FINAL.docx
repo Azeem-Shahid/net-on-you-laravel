@@ -1,0 +1,481 @@
+# Net On You - Complete Admin Manual & User Guide
+
+## Table of Contents
+1. [Admin Credentials](#admin-credentials)
+2. [User Credentials](#user-credentials)
+3. [Admin Panel Guide](#admin-panel-guide)
+4. [User Panel Guide](#user-panel-guide)
+5. [Payment Configuration](#payment-configuration)
+6. [Commission Management](#commission-management)
+7. [Email System](#email-system)
+8. [Contract Management](#contract-management)
+9. [User Management](#user-management)
+10. [Monthly Reports](#monthly-reports)
+11. [Payout Process](#payout-process)
+12. [Language Configuration](#language-configuration)
+13. [Subscription Management](#subscription-management)
+14. [Referral System](#referral-system)
+15. [Troubleshooting](#troubleshooting)
+
+---
+
+## Admin Credentials
+
+### Super Admin Access
+- **URL**: `https://netonyou.stockmanage.store/admin/login`
+- **Email**: `admin@netonyou.com`
+- **Password**: `admin123`
+- **Role**: Super Admin
+- **Access**: Full system access to all features
+
+
+---
+
+## User Credentials
+
+### Main Referrer (User 1 - Alex Johnson)
+- **Email**: `alex.johnson@example.com`
+- **Password**: `password123`
+- **Features**: 25+ referrals, commission tracking, complete transaction history
+
+### Level 1 Referrals (Direct referrals of Alex Johnson)
+- **Emails**: `level1user1@example.com` to `level1user10@example.com`
+- **Password**: `password123`
+- **Features**: Active subscriptions, commission generation
+
+### Level 2 Referrals (Referrals of Level 1 users)
+- **Emails**: `level2user0_1@example.com` to `level2user4_3@example.com`
+- **Password**: `password123`
+- **Features**: Multi-level commission tracking
+
+### Additional Test Users
+- **Sarah Wilson**: `sarah.wilson@example.com` / `password123`
+- **Michael Brown**: `michael.brown@example.com` / `password123`
+- **Emma Davis**: `emma.davis@example.com` / `password123`
+
+### Original System Users
+- **John Doe**: `john@example.com` / `password123`
+- **Jane Smith**: `jane@example.com` / `password123`
+- **Bob Wilson**: `bob@example.com` / `password123`
+- **Alice Johnson**: `alice@example.com` / `password123`
+- **Charlie Brown**: `charlie@example.com` / `password123`
+- **David Lee**: `david@example.com` / `password123`
+- **Emma Davis**: `emma@example.com` / `password123`
+- **Frank Miller**: `frank@example.com` / `password123`
+- **Maria Garcia**: `maria@example.com` / `password123`
+- **Pierre Dubois**: `pierre@example.com` / `password123`
+- **Hans Mueller**: `hans@example.com` / `password123`
+- **Referrer User**: `referrer@example.com` / `password123`
+- **Referred User 1**: `referred1@example.com` / `password123`
+- **Referred User 2**: `referred2@example.com` / `password123`
+
+---
+
+## Admin Panel Guide
+
+### 1. Dashboard Overview
+**Access**: `https://netonyou.stockmanage.store/admin/dashboard`
+
+The admin dashboard provides:
+- Total users count
+- Active subscriptions
+- Monthly revenue
+- Pending commissions
+- Recent transactions
+- System status
+
+### 2. User Management
+**Access**: `https://netonyou.stockmanage.store/admin/users`
+
+#### Creating Admin Users
+1. Navigate to Users section
+2. Click "Create New User"
+3. Fill in user details:
+   - Name: Your name
+   - Email: Your email
+   - Password: Set secure password
+   - Role: Select "admin" or "user"
+   - Status: Active
+4. **For admin users without payment rules**: Set role as "admin" and status as "active"
+5. Save user
+
+#### Manual User Registration
+1. Go to Users section
+2. Click "Create New User"
+3. Fill in user details
+4. Set subscription status as needed
+5. **For users without payment**: Leave subscription fields empty or set as "active" without payment
+
+### 3. Payment Configuration
+
+#### Setting Price to 39.90 USDT/USDC
+1. Go to Settings section
+2. Navigate to Payment Settings
+3. Update subscription prices:
+   - Basic Plan: 39.90 USDT
+   - Premium Plan: 39.90 USDT
+4. Save settings
+
+#### CoinPayments Configuration
+1. Go to Settings → Payment Gateways
+2. Configure CoinPayments:
+   - Merchant ID: Your CoinPayments merchant ID
+   - API Key: Your CoinPayments API key
+   - IPN Secret: Your IPN secret
+   - Currency: USDT/USDC
+3. Test the integration
+
+---
+
+## Commission Management
+
+### 1. Understanding Commission Rules
+**Access**: `https://netonyou.stockmanage.store/admin/commissions`
+
+#### Commission Structure
+- **Level 1**: 10% of subscription amount
+- **Level 2**: 5% for Level 1 user, 2% for original referrer
+- **Level 3**: 2% for original referrer
+- **Level 4-6**: 1% each for original referrer
+
+#### Eligibility Rules
+- Users must make at least 1 sale per month to be eligible for commissions
+- If no sales, commissions go to zero
+- Company receives unused commissions
+
+### 2. Viewing Commission Data
+1. Go to Commissions section
+2. View commission breakdown by:
+   - User
+   - Month
+   - Level
+   - Status (eligible/ineligible)
+3. Check wallet addresses for payments
+
+### 3. Monthly Commission Processing
+1. Go to Commission Management
+2. Click "Process Monthly Commissions"
+3. System will:
+   - Calculate eligible commissions
+   - Mark ineligible commissions as void
+   - Transfer unused commissions to company
+   - Generate payout reports
+
+---
+
+## Email System
+
+### 1. Email Templates Configuration
+**Access**: `https://netonyou.stockmanage.store/admin/email-templates`
+
+#### Creating Email Templates
+1. Click "Create New Template"
+2. Fill in template details:
+   - Name: Template name
+   - Subject: Email subject
+   - Content: HTML content with variables
+   - Language: Select language
+3. **HTML Format**: Yes, emails should be written in HTML
+4. Use variables like:
+   - `{{user_name}}` - User's name
+   - `{{user_email}}` - User's email
+   - `{{commission_amount}}` - Commission amount
+   - `{{referral_code}}` - User's referral code
+
+#### Automatic Email Sending
+- Users receive emails automatically
+- Payment confirmations sent to users
+- Commission notifications sent to referrers
+- Subscription expiration alerts sent
+
+### 2. Email Categories
+- **Welcome**: New user registration
+- **Payment**: Payment confirmations
+- **Commission**: Commission notifications
+- **Subscription**: Expiration alerts
+- **Referral**: Referral notifications
+
+---
+
+## Contract Management
+
+### 1. Updating Contracts
+**Access**: `https://netonyou.stockmanage.store/admin/contracts`
+
+#### Changing Contract Content
+1. Go to Contracts section
+2. Click on existing contract
+3. Click "Edit"
+4. Update contract content
+5. Save changes
+
+#### Language Fallback
+- If contract not available in user's language, defaults to English
+- Ensure English contract is always available
+- Add contracts for all supported languages
+
+### 2. Contract Types
+- Terms of Service
+- Privacy Policy
+- Referral Agreement
+- Commission Terms
+
+---
+
+## User Management
+
+### 1. Creating Admin Users Without Payment Rules
+1. Go to Users section
+2. Click "Create New User"
+3. Set user details:
+   - Role: "admin"
+   - Status: "active"
+   - Subscription: Leave empty or set as "active"
+4. **No payment required** for admin users
+5. **No sales requirement** for admin users
+
+### 2. Manual User Creation
+1. Navigate to Users section
+2. Click "Create New User"
+3. Fill in user details
+4. Set subscription status as needed
+5. **For free users**: Set subscription as "active" without payment
+
+---
+
+## Monthly Reports
+
+### 1. Total Balance Calculation
+**Access**: `https://netonyou.stockmanage.store/admin/analytics`
+
+#### Monthly Report Features
+1. Go to Analytics section
+2. Select "Monthly Reports"
+3. View:
+   - Total revenue
+   - Total commissions to pay
+   - Ineligible commissions
+   - Company balance
+   - Net profit
+
+### 2. Company Withdrawal Calculation
+1. Go to Commission Management
+2. Click "Monthly Breakdown"
+3. View:
+   - Total commissions earned
+   - Eligible commissions to pay
+   - Ineligible commissions (go to company)
+   - Company withdrawal amount
+
+### 3. Preventing Overdrafts
+- System calculates available balance
+- Shows maximum safe withdrawal amount
+- Alerts if withdrawal would cause overdraft
+- Tracks CoinPayments account balance
+
+---
+
+## Payout Process
+
+### 1. Viewing Payouts
+**Access**: `https://netonyou.stockmanage.store/admin/payouts`
+
+#### Payout Management
+1. Go to Payouts section
+2. View pending payouts
+3. See user wallet addresses
+4. Check payout amounts
+
+### 2. Processing Payouts
+1. Select payout batch
+2. Click "Start Processing"
+3. Process individual payouts
+4. Mark as "Sent" when completed
+5. Mark as "Paid" when confirmed
+
+### 3. User Notifications
+- Users receive email when payout is sent
+- Users receive email when payout is confirmed
+- Ineligible users receive notification in backoffice
+- Balance automatically goes to zero after payment
+
+### 4. Balance Management
+- Eligible users: Balance goes to zero after payment
+- Ineligible users: Balance goes to zero automatically
+- Company receives unused commissions
+
+---
+
+## Language Configuration
+
+### 1. Adding New Languages
+**Access**: `https://netonyou.stockmanage.store/admin/languages`
+
+#### Adding Brazilian Portuguese and Italian
+1. Go to Languages section
+2. Click "Add New Language"
+3. Add Brazilian Portuguese:
+   - Name: Portuguese (Brazil)
+   - Code: pt-BR
+   - Flag: br
+4. Add Italian:
+   - Name: Italian
+   - Code: it
+   - Flag: it
+5. Set as active
+
+### 2. Language Visibility
+- All languages are visible by default
+- Users can switch between languages
+- Contracts default to English if language not available
+
+---
+
+## Subscription Management
+
+### 1. Subscription Expiration Alerts
+**Access**: `https://netonyou.stockmanage.store/admin/subscriptions`
+
+#### Alert System
+- Users receive alerts 30 days before expiration
+- Users receive alerts 7 days before expiration
+- Users receive alerts 1 day before expiration
+- Admin can see expiring subscriptions
+
+### 2. Subscription Status
+- Active: Subscription is valid
+- Expired: Subscription has expired
+- Cancelled: Subscription was cancelled
+- Pending: Payment pending
+
+---
+
+## Referral System
+
+### 1. Referral Link Testing
+**Access**: `https://netonyou.stockmanage.store/admin/referrals`
+
+#### Testing Referral Links
+1. Go to Referrals section
+2. Click "Test Referral System"
+3. Verify 6-level referral structure
+4. Check commission calculations
+5. Test referral tracking
+
+### 2. Referral Validation
+1. Go to Referral Validation section
+2. Run system validation
+3. Check referral integrity
+4. Verify commission calculations
+5. Export validation report
+
+### 3. Monthly Referral Reports
+- View referrals by month
+- Check total referrals since beginning
+- Verify commission calculations
+- Export referral reports
+
+---
+
+## User Panel Guide
+
+### 1. Manual Payment Option
+**Access**: `https://netonyou.stockmanage.store/payment/manual`
+
+#### Manual Payment Process
+1. User selects manual payment
+2. User uploads payment proof
+3. Admin reviews payment proof
+4. Admin approves payment
+5. User receives confirmation
+
+### 2. Referral Dashboard
+**Access**: `https://netonyou.stockmanage.store/referrals`
+
+#### Referral Features
+- View referral tree
+- Check commission earnings
+- See referral statistics
+- Track referral performance
+
+### 3. Payment Confirmation
+- Users receive email when payment is confirmed
+- Referrers receive email when someone pays
+- Commission notifications sent automatically
+
+---
+
+## Troubleshooting
+
+### 1. Common Issues
+
+#### Payment Issues
+- Check CoinPayments configuration
+- Verify webhook settings
+- Review payment logs
+- Test payment flow
+
+#### Commission Issues
+- Validate referral system
+- Check commission rates
+- Review transaction data
+- Run system validation
+
+#### Email Issues
+- Check SMTP settings
+- Verify email templates
+- Review email logs
+- Test email sending
+
+### 2. Support Resources
+- System logs: Check Laravel logs
+- Email logs: Review email delivery
+- Payment logs: Monitor payment processing
+- User activity: Track user behavior
+
+---
+
+## Quick Reference
+
+### Important URLs
+- **Admin Login**: `/admin/login`
+- **Dashboard**: `/admin/dashboard`
+- **Users**: `/admin/users`
+- **Commissions**: `/admin/commissions`
+- **Payouts**: `/admin/payouts`
+- **Settings**: `/admin/settings`
+
+### Key Commands
+- **Clear Cache**: `php artisan cache:clear`
+- **Run Migrations**: `php artisan migrate`
+- **Process Commissions**: `php artisan commissions:calculate`
+- **Send Emails**: `php artisan emails:send`
+
+### Security Checklist
+- [ ] Regular password updates
+- [ ] Two-factor authentication enabled
+- [ ] Session timeout configured
+- [ ] API keys secured
+- [ ] Logs monitored
+- [ ] Backups scheduled
+
+---
+
+## Conclusion
+
+This manual covers all aspects of the Net On You platform, including:
+- Complete admin and user credentials
+- Payment configuration (39.90 USDT/USDC)
+- Commission management and eligibility rules
+- Email system with HTML templates
+- Contract management with language fallback
+- User creation without payment rules
+- Monthly reports and company withdrawal calculations
+- Payout process with notifications
+- Language configuration (including Brazilian Portuguese and Italian)
+- Subscription management with expiration alerts
+- Referral system testing and validation
+
+The system is designed to handle all your requirements, including the 6-level referral structure, commission calculations, and automatic notifications. All features are accessible through the admin panel, and the system provides comprehensive reporting and management capabilities.
+
+For additional support or customization requests (such as adding card payments), the system is designed to be easily extensible and can accommodate future enhancements.

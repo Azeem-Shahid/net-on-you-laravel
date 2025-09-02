@@ -153,6 +153,116 @@
             </div>
         </div>
 
+        <!-- Special Benefits Card (for User 1 and Direct Referrals) -->
+        @if($user->hasSpecialAccess())
+        <div class="bg-gradient-to-r from-[#1d003f] to-[#2a0057] rounded-lg shadow-lg p-6 mb-6 text-white">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-[#00ff00] rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-[#1d003f]" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold">🎉 Special Benefits</h2>
+                    <p class="text-[#00ff00] font-medium">{{ $user->getFreeAccessReason() }}</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white/10 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-[#00ff00] mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold">Free Access</h3>
+                    </div>
+                    <p class="text-sm text-gray-200">Complete access to all magazines and premium content without any payment required.</p>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-[#00ff00] mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold">Special Commission Eligibility</h3>
+                    </div>
+                    <p class="text-sm text-gray-200 mb-2">Always eligible for commissions regardless of direct sales requirements.</p>
+                    <div class="text-xs text-[#00ff00]">
+                        <div>L1: 15 USDT | L2: 10 USDT | L3: 5 USDT</div>
+                        <div>L4: 1 USDT | L5: 1 USDT | L6: 1 USDT</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-[#00ff00] mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold">Priority Support</h3>
+                    </div>
+                    <p class="text-sm text-gray-200">Exclusive access to priority customer support and special features.</p>
+                </div>
+            </div>
+            
+            <!-- Commission Structure Display -->
+            <div class="mt-4 p-4 bg-white/10 rounded-lg border border-[#00ff00]/30">
+                <h4 class="font-bold text-[#00ff00] mb-3">💰 Commission Structure (Always Eligible)</h4>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-center">
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">15 USDT</div>
+                        <div class="text-xs text-gray-200">Level 1</div>
+                    </div>
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">10 USDT</div>
+                        <div class="text-xs text-gray-200">Level 2</div>
+                    </div>
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">5 USDT</div>
+                        <div class="text-xs text-gray-200">Level 3</div>
+                    </div>
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">1 USDT</div>
+                        <div class="text-xs text-gray-200">Level 4</div>
+                    </div>
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">1 USDT</div>
+                        <div class="text-xs text-gray-200">Level 5</div>
+                    </div>
+                    <div class="bg-[#00ff00]/20 rounded p-2">
+                        <div class="text-lg font-bold text-[#00ff00]">1 USDT</div>
+                        <div class="text-xs text-gray-200">Level 6</div>
+                    </div>
+                </div>
+            </div>
+
+            @if($user->id === 1)
+            <div class="mt-4 p-4 bg-[#00ff00]/20 rounded-lg border border-[#00ff00]/30">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-[#00ff00] mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-bold text-[#00ff00]">👑 Network Founder Status</h4>
+                        <p class="text-sm text-gray-200">As the Network Founder, you have the highest level of access and privileges in the entire network.</p>
+                    </div>
+                </div>
+            </div>
+            @elseif($user->referrer_id === 1)
+            <div class="mt-4 p-4 bg-[#00ff00]/20 rounded-lg border border-[#00ff00]/30">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-[#00ff00] mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-bold text-[#00ff00]">⭐ Direct Referral of Network Founder</h4>
+                        <p class="text-sm text-gray-200">As a direct referral of the Network Founder, you enjoy special privileges and benefits.</p>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+        @endif
+
         <!-- Access Status Card -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Access Status</h2>
