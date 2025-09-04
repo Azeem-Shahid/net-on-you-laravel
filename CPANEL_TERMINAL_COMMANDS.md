@@ -412,3 +412,4 @@ chmod -R 775 storage/ bootstrap/cache/
 **Remember**: Replace `your_username` and `your_database_name` with your actual cPanel credentials.
 
 
+

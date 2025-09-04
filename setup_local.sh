@@ -85,3 +85,4 @@ echo "Setup completed!"
 echo "Run 'php artisan serve' to start the development server"
 echo "Then visit: http://localhost:8000"
 
+
