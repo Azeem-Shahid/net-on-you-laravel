@@ -496,3 +496,4 @@ curl -X POST http://localhost:8000/payments/coinpayments/ipn \
 ```
 
 **Your CoinPayments integration is now fully functional and ready for production!** 🎉
+

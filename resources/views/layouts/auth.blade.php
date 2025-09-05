@@ -41,6 +41,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-primary">
+    <!-- Flash Messages -->
+    @if(session('success'))
+        <div class="fixed top-4 right-4 bg-action/20 border border-action text-action px-4 py-3 rounded-lg z-50" role="alert">
+            {{ session('success') }}
+            <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-action hover:text-action/80" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="fixed top-4 right-4 bg-danger/20 border border-danger text-danger px-4 py-3 rounded-lg z-50" role="alert">
+            {{ session('error') }}
+            <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-danger hover:text-danger/80" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
+    @if(session('warning'))
+        <div class="fixed top-4 right-4 bg-yellow-500/20 border border-yellow-500 text-yellow-400 px-4 py-3 rounded-lg z-50" role="alert">
+            {{ session('warning') }}
+            <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-yellow-400 hover:text-yellow-300" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
+    @if(session('info'))
+        <div class="fixed top-4 right-4 bg-blue-500/20 border border-blue-500 text-blue-400 px-4 py-3 rounded-lg z-50" role="alert">
+            {{ session('info') }}
+            <button type="button" class="absolute top-0 right-0 mt-2 mr-2 text-blue-400 hover:text-blue-300" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
     <!-- Page Content -->
     @yield('content')
     

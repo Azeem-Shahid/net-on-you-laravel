@@ -58,11 +58,13 @@ Route::middleware('auth')->group(function () {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', 'Verification link sent!');
     })->middleware(['throttle:6,1'])->name('verification.send');
+    
+    // Logout route - accessible to all authenticated users (verified or not)
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Protected User Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile/edit', [DashboardController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('profile.update');

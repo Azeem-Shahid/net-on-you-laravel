@@ -104,29 +104,21 @@
         <div class="bg-white py-6 px-6 shadow rounded-lg">
             <h3 class="text-lg font-medium text-gray-900 mb-4 text-center">Simple Pricing</h3>
             <div class="grid grid-cols-1 gap-4">
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h4 class="font-medium text-gray-900">Monthly Plan</h4>
-                            <p class="text-sm text-gray-600">Perfect for trying out</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-2xl font-bold text-gray-900">$9.99</p>
-                            <p class="text-sm text-gray-600">per month</p>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="border-2 border-purple-500 rounded-lg p-4 bg-purple-50">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h4 class="font-medium text-gray-900">Annual Plan</h4>
-                            <p class="text-sm text-gray-600">Best value - Save 17%</p>
+                            <h4 class="font-medium text-gray-900">2-Year Magazine Subscription</h4>
+                            <p class="text-sm text-gray-600">Best value - Access to all magazines for 2 years</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-2xl font-bold text-gray-900">$99.99</p>
-                            <p class="text-sm text-gray-600">per year</p>
+                            <p class="text-2xl font-bold text-gray-900">$39.90</p>
+                            <p class="text-sm text-gray-600">USDT for 2 years</p>
                         </div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <p>✓ 12 magazines (6 per year)</p>
+                        <p>✓ High-quality PDF downloads</p>
+                        <p>✓ Multi-language support</p>
                     </div>
                 </div>
             </div>

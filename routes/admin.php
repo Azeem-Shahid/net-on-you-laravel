@@ -158,6 +158,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/create-payout-batch', [App\Http\Controllers\Admin\CommissionManagementController::class, 'createPayoutBatch'])->name('create-payout-batch');
             Route::post('/payout-items/{payoutItem}/mark-sent', [App\Http\Controllers\Admin\CommissionManagementController::class, 'markPayoutSent'])->name('mark-payout-sent');
             Route::post('/payout-items/{payoutItem}/mark-paid', [App\Http\Controllers\Admin\CommissionManagementController::class, 'markPayoutPaid'])->name('mark-payout-paid');
+            
+            // Enhanced Commission Management Features
+            Route::post('/override-eligibility', [App\Http\Controllers\Admin\CommissionManagementController::class, 'overrideEligibility'])->name('override-eligibility');
+            Route::post('/mark-ineligible', [App\Http\Controllers\Admin\CommissionManagementController::class, 'markIneligible'])->name('mark-ineligible');
+            Route::get('/user-commission-report', [App\Http\Controllers\Admin\CommissionManagementController::class, 'userCommissionReport'])->name('user-commission-report');
         });
         
         // Payout Management

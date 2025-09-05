@@ -247,3 +247,4 @@ echo ""
 
 echo "🚀 Your CoinPayments integration is now live!"
 
+

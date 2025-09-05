@@ -20,6 +20,29 @@
                 @include('components.custom-language-widget')
             </div>
 
+        <!-- Display Validation Errors -->
+        @if ($errors->any())
+            <div class="mb-6 bg-danger/20 border border-danger text-danger px-4 py-3 rounded-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-danger">
+                            {{ t('validation_errors', [], 'auth') }}
+                        </h3>
+                        <div class="mt-2 text-sm text-danger">
+                            <ul class="list-disc list-inside space-y-1">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <form class="mt-8 space-y-6" method="POST" action="{{ route('register') }}">
             @csrf
             
@@ -30,9 +53,12 @@
                         {{ t('full_name', [], 'auth') }}
                     </label>
                     <input id="name" name="name" type="text" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('name') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_full_name', [], 'auth') }}"
                            value="{{ old('name') }}">
+                    @error('name')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Email -->
@@ -41,9 +67,12 @@
                         {{ t('email', [], 'common') }}
                     </label>
                     <input id="email" name="email" type="email" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('email') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_email', [], 'auth') }}"
                            value="{{ old('email') }}">
+                    @error('email')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Password -->
@@ -52,8 +81,11 @@
                         {{ t('password', [], 'auth') }}
                     </label>
                     <input id="password" name="password" type="password" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('password') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_password', [], 'auth') }}">
+                    @error('password')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Confirm Password -->
@@ -62,8 +94,11 @@
                         {{ t('confirm_password', [], 'auth') }}
                     </label>
                     <input id="password_confirmation" name="password_confirmation" type="password" required 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('password_confirmation') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('confirm_password_placeholder', [], 'auth') }}">
+                    @error('password_confirmation')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Wallet Address -->
@@ -72,9 +107,12 @@
                         {{ t('wallet_address', [], 'dashboard') }} ({{ t('optional', [], 'common') }})
                     </label>
                     <input id="wallet_address" name="wallet_address" type="text" 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('wallet_address') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_wallet_address', [], 'auth') }}"
                            value="{{ old('wallet_address') }}">
+                    @error('wallet_address')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Referrer ID -->
@@ -83,12 +121,15 @@
                         {{ t('referrer_id', [], 'auth') }} ({{ t('optional', [], 'common') }})
                     </label>
                     <input id="referrer_id" name="referrer_id" type="text" 
-                           class="mt-1 block w-full px-3 py-3 border border-action/30 rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                           class="mt-1 block w-full px-3 py-3 border @error('referrer_id') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
                            placeholder="{{ t('enter_referrer_id', [], 'auth') }}"
                            value="{{ old('referrer_id') ?? request('ref') }}">
                     @if(request('ref'))
                         <p class="mt-1 text-xs text-action/80">{{ t('you_were_referred', [], 'auth') }}</p>
                     @endif
+                    @error('referrer_id')
+                        <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 

@@ -243,3 +243,4 @@ SUBSCRIPTION_PRICE="39.90"
 ```
 
 **Just replace the placeholders and you're ready to go!** 🚀
+

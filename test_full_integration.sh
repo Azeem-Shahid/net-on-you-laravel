@@ -46,3 +46,4 @@ echo '   IPN URL: ' . config('services.coinpayments.ipn_url') . '\n';
 "
 
 echo "✅ Full integration test completed!"
+

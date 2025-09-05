@@ -405,3 +405,4 @@ Before declaring production ready:
 
 **Your CoinPayments integration is now ready for production deployment!** 🎉
 
+

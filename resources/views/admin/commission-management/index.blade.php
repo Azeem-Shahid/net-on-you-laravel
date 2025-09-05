@@ -1,14 +1,18 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Commission Management')
+@section('title', 'Enhanced Commission Management')
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="bg-white rounded-lg shadow-md">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <h3 class="text-xl font-bold text-gray-900">Commission Management Dashboard</h3>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900">Enhanced Commission Management</h3>
+                        <p class="text-sm text-gray-600 mt-1">Comprehensive commission tracking, payment status, and admin override tools</p>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
                         <button type="button" class="inline-flex items-center px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary/80 transition-colors" onclick="openProcessEligibilityModal()">
                             <i class="fas fa-calculator mr-2"></i> Process Monthly Eligibility
@@ -16,11 +20,39 @@
                         <button type="button" class="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors" onclick="openCreatePayoutModal()">
                             <i class="fas fa-money-bill-wave mr-2"></i> Create Payout Batch
                         </button>
+                        <button type="button" class="inline-flex items-center px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors" onclick="openOverrideModal()">
+                            <i class="fas fa-user-cog mr-2"></i> Admin Override
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="p-6">
-                <!-- Monthly Stats -->
+                <!-- Monthly Payment Summary -->
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-md mb-6">
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-4">Monthly Payment Summary - {{ $monthlyPaymentSummary['month'] ?? now()->format('Y-m') }}</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">${{ number_format($monthlyPaymentSummary['total_balance'] ?? 0, 2) }}</div>
+                                <div class="text-sm opacity-75">Total Balance to Pay</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">${{ number_format($monthlyPaymentSummary['company_earnings'] ?? 0, 2) }}</div>
+                                <div class="text-sm opacity-75">Company Earnings</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">{{ $monthlyPaymentSummary['eligible_users_count'] ?? 0 }}</div>
+                                <div class="text-sm opacity-75">Eligible Users</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold">{{ $monthlyPaymentSummary['ineligible_users_count'] ?? 0 }}</div>
+                                <div class="text-sm opacity-75">Ineligible Users</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commission Status Overview -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                     <div class="bg-blue-600 text-white rounded-lg shadow-md">
                         <div class="p-6">
@@ -37,25 +69,25 @@
                         <div class="p-6">
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <h4 class="text-2xl font-bold mb-1">${{ number_format($totalStats['total_commissions'] ?? 0, 2) }}</h4>
-                                    <p class="text-sm opacity-75">Total Commissions</p>
+                                    <h4 class="text-2xl font-bold mb-1">${{ number_format($totalStats['eligible'] ?? 0, 2) }}</h4>
+                                    <p class="text-sm opacity-75">Eligible Commissions</p>
                                 </div>
-                                <i class="fas fa-dollar-sign text-3xl opacity-75"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-yellow-600 text-white rounded-lg shadow-md">
-                        <div class="p-6">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h4 class="text-2xl font-bold mb-1">${{ number_format($pendingPayouts->sum('amount') ?? 0, 2) }}</h4>
-                                    <p class="text-sm opacity-75">Pending Payouts</p>
-                                </div>
-                                <i class="fas fa-clock text-3xl opacity-75"></i>
+                                <i class="fas fa-check-circle text-3xl opacity-75"></i>
                             </div>
                         </div>
                     </div>
                     <div class="bg-red-600 text-white rounded-lg shadow-md">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="text-2xl font-bold mb-1">${{ number_format($totalStats['ineligible'] ?? 0, 2) }}</h4>
+                                    <p class="text-sm opacity-75">Ineligible Commissions</p>
+                                </div>
+                                <i class="fas fa-times-circle text-3xl opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-600 text-white rounded-lg shadow-md">
                         <div class="p-6">
                             <div class="flex justify-between items-center">
                                 <div>
@@ -68,131 +100,162 @@
                     </div>
                 </div>
 
-                <!-- Monthly Breakdown -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Commission Eligibility Report -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     <div class="bg-white rounded-lg shadow-md">
                         <div class="px-6 py-4 border-b border-gray-200">
-                            <h5 class="text-lg font-medium text-gray-900">Monthly Commission Breakdown</h5>
+                            <h4 class="text-lg font-semibold text-gray-900">Users with Direct Sales</h4>
+                            <p class="text-sm text-gray-600">Users who made sales and qualify for commissions</p>
                         </div>
                         <div class="p-6">
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Month</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Eligible</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ineligible</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ now()->format('M Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($currentMonthStats['eligible_commissions'] ?? 0, 2) }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($currentMonthStats['ineligible_commissions'] ?? 0, 2) }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format(($currentMonthStats['eligible_commissions'] ?? 0) + ($currentMonthStats['ineligible_commissions'] ?? 0), 2) }}</td>
-                                        </tr>
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ now()->subMonth()->format('M Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($previousMonthStats['eligible_commissions'] ?? 0, 2) }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($previousMonthStats['ineligible_commissions'] ?? 0, 2) }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format(($previousMonthStats['eligible_commissions'] ?? 0) + ($previousMonthStats['ineligible_commissions'] ?? 0), 2) }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="space-y-3">
+                                @forelse($commissionEligibilityReport['users_with_sales'] ?? [] as $userData)
+                                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">{{ $userData['user']->name }}</div>
+                                        <div class="text-sm text-gray-600">{{ $userData['user']->email }}</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-green-600">${{ number_format($userData['eligible_commission'], 2) }}</div>
+                                        <div class="text-xs text-gray-500">{{ $userData['commission_count'] }} commissions</div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="text-center text-gray-500 py-4">No users with direct sales found</div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
                     
                     <div class="bg-white rounded-lg shadow-md">
                         <div class="px-6 py-4 border-b border-gray-200">
-                            <h5 class="text-lg font-medium text-gray-900">Recent Commissions</h5>
+                            <h4 class="text-lg font-semibold text-gray-900">Users without Direct Sales</h4>
+                            <p class="text-sm text-gray-600">Users who didn't make sales (commissions go to company)</p>
                         </div>
                         <div class="p-6">
+                            <div class="space-y-3">
+                                @forelse($commissionEligibilityReport['users_without_sales'] ?? [] as $userData)
+                                <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">{{ $userData['user']->name }}</div>
+                                        <div class="text-sm text-gray-600">{{ $userData['user']->email }}</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-semibold text-red-600">${{ number_format($userData['ineligible_commission'], 2) }}</div>
+                                        <div class="text-xs text-gray-500">{{ $userData['commission_count'] }} commissions</div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="text-center text-gray-500 py-4">No users without direct sales found</div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed User Breakdown -->
+                <div class="bg-white rounded-lg shadow-md mb-6">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h4 class="text-lg font-semibold text-gray-900">Detailed User Breakdown</h4>
+                        <p class="text-sm text-gray-600">Complete breakdown of all users with commissions this month</p>
+                    </div>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Commission</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Eligible</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ineligible</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Direct Sales</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
-                                        @if($recentCommissions->count() > 0)
-                                            @foreach($recentCommissions as $commission)
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $commission->id }}</td>
+                                @forelse($monthlyPaymentSummary['user_breakdown'] ?? [] as $userBreakdown)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">{{ $userBreakdown['user']->name }}</div>
+                                            <div class="text-sm text-gray-500">{{ $userBreakdown['user']->email }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${{ number_format($userBreakdown['total_commission'], 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">
+                                        ${{ number_format($userBreakdown['eligible_commission'], 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600">
+                                        ${{ number_format($userBreakdown['ineligible_commission'], 2) }}
+                                    </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $commission->eligibility == 'eligible' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                        {{ ucfirst($commission->eligibility) }}
+                                        @if($userBreakdown['has_direct_sales'])
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Yes
                                                     </span>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($commission->amount, 2) }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $commission->created_at->format('Y-m-d') }}</td>
-                                            </tr>
-                                            @endforeach
                                         @else
-                                        <tr>
-                                            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No commissions found.</td>
-                                        </tr>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                No
+                                            </span>
                                         @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button onclick="openUserOverrideModal({{ $userBreakdown['user']->id }}, '{{ $monthlyPaymentSummary['month'] }}')" 
+                                                class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                            Override
+                                        </button>
+                                        <button onclick="openUserReportModal({{ $userBreakdown['user']->id }}, '{{ $monthlyPaymentSummary['month'] }}')" 
+                                                class="text-blue-600 hover:text-blue-900">
+                                            Report
+                                        </button>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No commission data found for this month</td>
+                                </tr>
+                                @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
+                <!-- Admin Override Modal -->
+                <div id="overrideModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+                    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                        <div class="mt-3">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-gray-900">Admin Override</h3>
+                                <button onclick="closeOverrideModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Process Eligibility Modal -->
-<div id="processEligibilityModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="{{ route('admin.commission-management.process-eligibility') }}" method="POST">
+                            <form id="overrideForm" method="POST" action="{{ route('admin.commission-management.override-eligibility') }}">
                 @csrf
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-calculator text-blue-600"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Process Monthly Eligibility
-                            </h3>
-                            <div class="mt-4">
                                 <div class="mb-4">
-                                    <label for="month" class="block text-sm font-medium text-gray-700 mb-1">Month</label>
-                                    <input type="month" class="w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" id="month" name="month" value="{{ date('Y-m') }}" required>
-                                    <p class="mt-1 text-xs text-gray-500">Select the month to process eligibility for.</p>
+                                    <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
+                                    <select id="user_id" name="user_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                        <option value="">Select User</option>
+                                        @foreach($monthlyPaymentSummary['user_breakdown'] ?? [] as $userBreakdown)
+                                        <option value="{{ $userBreakdown['user']->id }}">{{ $userBreakdown['user']->name }} ({{ $userBreakdown['user']->email }})</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-                                    <textarea class="w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" id="reason" name="reason" rows="3" required></textarea>
-                                    <p class="mt-1 text-xs text-gray-500">Provide a reason for processing eligibility.</p>
+                                    <label for="month" class="block text-sm font-medium text-gray-700">Month</label>
+                                    <input type="month" id="month" name="month" value="{{ $monthlyPaymentSummary['month'] ?? now()->format('Y-m') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
                                 </div>
-                                <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-info-circle mr-2"></i>
-                                        This will process the 1-sale-per-month rule for all users and update commission eligibility.
-                                    </div>
+                                <div class="mb-4">
+                                    <label for="reason" class="block text-sm font-medium text-gray-700">Reason</label>
+                                    <textarea id="reason" name="reason" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" placeholder="Enter reason for override..."></textarea>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm">
-                        Process Eligibility
-                    </button>
-                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-action sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal('processEligibilityModal')">
+                                <div class="flex justify-end space-x-3">
+                                    <button type="button" onclick="closeOverrideModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
                         Cancel
+                    </button>
+                                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80">
+                                        Override Eligibility
                     </button>
                 </div>
             </form>
@@ -200,81 +263,132 @@
     </div>
 </div>
 
-<!-- Create Payout Modal -->
-<div id="createPayoutModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="{{ route('admin.commission-management.create-payout-batch') }}" method="POST">
-                @csrf
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-money-bill-wave text-green-600"></i>
+                <!-- User Report Modal -->
+                <div id="userReportModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+                    <div class="relative top-10 mx-auto p-5 border w-4/5 max-w-4xl shadow-lg rounded-md bg-white">
+                        <div class="mt-3">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-gray-900">User Commission Report</h3>
+                                <button onclick="closeUserReportModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-times"></i>
+                                </button>
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Create Payout Batch
-                            </h3>
-                            <div class="mt-4">
-                                <div class="mb-4">
-                                    <label for="payout_month" class="block text-sm font-medium text-gray-700 mb-1">Month</label>
-                                    <input type="month" class="w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" id="payout_month" name="month" value="{{ date('Y-m') }}" required>
-                                    <p class="mt-1 text-xs text-gray-500">Select the month to create payouts for.</p>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="payout_reason" class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-                                    <textarea class="w-full rounded-md border-gray-300 shadow-sm focus:border-action focus:ring-action sm:text-sm" id="payout_reason" name="reason" rows="3" required></textarea>
-                                    <p class="mt-1 text-xs text-gray-500">Provide a reason for creating the payout batch.</p>
-                                </div>
-                                <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded-lg">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-exclamation-triangle mr-2"></i>
-                                        This will create a payout batch for all eligible commissions in the selected month.
-                                    </div>
-                                </div>
+                            <div id="userReportContent">
+                                <!-- Report content will be loaded here -->
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Create Payout Batch
-                    </button>
-                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-action sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal('createPayoutModal')">
-                        Cancel
-                    </button>
                 </div>
-            </form>
         </div>
     </div>
 </div>
 
 <script>
-function openProcessEligibilityModal() {
-    document.getElementById('processEligibilityModal').classList.remove('hidden');
+function openOverrideModal() {
+    document.getElementById('overrideModal').classList.remove('hidden');
 }
 
-function openCreatePayoutModal() {
-    document.getElementById('createPayoutModal').classList.remove('hidden');
+function closeOverrideModal() {
+    document.getElementById('overrideModal').classList.add('hidden');
 }
 
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
+function openUserOverrideModal(userId, month) {
+    document.getElementById('user_id').value = userId;
+    document.getElementById('month').value = month;
+    openOverrideModal();
+}
+
+function openUserReportModal(userId, month) {
+    document.getElementById('userReportModal').classList.remove('hidden');
+    
+    // Load user report data
+    fetch(`{{ route('admin.commission-management.user-commission-report') }}?user_id=${userId}&month=${month}`)
+        .then(response => response.json())
+        .then(data => {
+            const content = document.getElementById('userReportContent');
+            content.innerHTML = `
+                <div class="mb-4">
+                    <h4 class="text-lg font-semibold">Commission Summary for ${data.commissions[0]?.earner?.name || 'User'}</h4>
+                    <p class="text-sm text-gray-600">Month: ${data.month}</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-blue-600">$${data.summary.total_amount.toFixed(2)}</div>
+                        <div class="text-sm text-blue-800">Total Amount</div>
+                    </div>
+                    <div class="bg-green-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-green-600">$${data.summary.eligible_amount.toFixed(2)}</div>
+                        <div class="text-sm text-green-800">Eligible</div>
+                    </div>
+                    <div class="bg-red-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-red-600">$${data.summary.ineligible_amount.toFixed(2)}</div>
+                        <div class="text-sm text-red-800">Ineligible</div>
+                    </div>
+                    <div class="bg-yellow-100 p-4 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-yellow-600">${data.summary.total_count}</div>
+                        <div class="text-sm text-yellow-800">Total Count</div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Level</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Eligibility</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source User</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${data.commissions.map(commission => `
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${new Date(commission.created_at).toLocaleDateString()}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        Level ${commission.level}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        $${commission.amount.toFixed(2)}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${commission.eligibility === 'eligible' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                            ${commission.eligibility}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        ${commission.source_user?.name || 'N/A'}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error('Error loading user report:', error);
+            document.getElementById('userReportContent').innerHTML = '<p class="text-red-600">Error loading report data.</p>';
+        });
+}
+
+function closeUserReportModal() {
+    document.getElementById('userReportModal').classList.add('hidden');
 }
 
 // Close modals when clicking outside
-document.getElementById('processEligibilityModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeModal('processEligibilityModal');
+window.onclick = function(event) {
+    const overrideModal = document.getElementById('overrideModal');
+    const userReportModal = document.getElementById('userReportModal');
+    
+    if (event.target === overrideModal) {
+        closeOverrideModal();
     }
-});
-
-document.getElementById('createPayoutModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeModal('createPayoutModal');
+    if (event.target === userReportModal) {
+        closeUserReportModal();
     }
-});
+}
 </script>
 @endsection

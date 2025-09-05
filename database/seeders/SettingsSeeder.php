@@ -50,9 +50,9 @@ class SettingsSeeder extends Seeder
             ],
             [
                 'key' => 'subscription_price',
-                'value' => '9.99',
+                'value' => '39.90',
                 'type' => 'decimal',
-                'description' => 'Monthly subscription price in USD',
+                'description' => '2-year subscription price in USD',
                 'updated_by_admin_id' => 1,
             ],
             [

@@ -352,3 +352,4 @@ Your Net On You application with CoinPayments and email integration is now ready
 1. Test with small amounts
 2. Monitor for 24 hours
 3. Go live with confidence!
+

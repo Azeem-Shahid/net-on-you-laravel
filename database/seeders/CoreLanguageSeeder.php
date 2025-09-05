@@ -57,3 +57,4 @@ class CoreLanguageSeeder extends Seeder
         $this->command->info('Core languages seeded successfully!');
     }
 }
+

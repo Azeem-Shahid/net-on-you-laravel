@@ -149,3 +149,4 @@ Your CoinPayments integration is now fully configured and ready for production u
 
 **Status**: ✅ **READY FOR PRODUCTION**
 
+

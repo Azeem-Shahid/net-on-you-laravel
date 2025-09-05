@@ -37,46 +37,79 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:150',
-            'email' => 'required|string|email|max:191|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'wallet_address' => 'nullable|string|max:191',
-            'language' => 'nullable|string|max:10',
-            'referrer_id' => 'nullable|exists:users,id',
-        ]);
+        try {
+            // Log registration attempt
+            \Log::info('Registration attempt', [
+                'email' => $request->email,
+                'name' => $request->name,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent()
+            ]);
 
-        if ($validator->fails()) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:150',
+                'email' => 'required|string|email|max:191|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+                'wallet_address' => 'nullable|string|max:191',
+                'language' => 'nullable|string|max:10',
+                'referrer_id' => 'nullable|exists:users,id',
+            ]);
+
+            if ($validator->fails()) {
+                \Log::info('Registration validation failed', $validator->errors()->toArray());
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Check database connection
+            if (!DB::connection()->getPdo()) {
+                \Log::error('Database connection failed during registration');
+                return redirect()->back()
+                    ->withErrors(['email' => 'Database connection error. Please try again.'])
+                    ->withInput();
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'wallet_address' => $request->wallet_address,
+                'language' => $request->language ?? 'en',
+                'referrer_id' => $request->referrer_id,
+                'role' => 'user',
+                'status' => 'active',
+            ]);
+
+            \Log::info('User created successfully', ['user_id' => $user->id, 'email' => $user->email]);
+
+            // Build referral upline if referrer exists
+            if ($request->referrer_id) {
+                $referrer = User::find($request->referrer_id);
+                if ($referrer) {
+                    $referralService = app(ReferralService::class);
+                    $referralService->buildReferralUpline($user, $referrer);
+                }
+            }
+
+            event(new Registered($user));
+
+            Auth::login($user);
+
+            \Log::info('User logged in successfully', ['user_id' => $user->id]);
+
+            return redirect()->route('verification.notice');
+        } catch (\Exception $e) {
+            \Log::error('Registration failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
+
             return redirect()->back()
-                ->withErrors($validator)
+                ->withErrors(['email' => 'Registration failed. Please try again.'])
                 ->withInput();
         }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'wallet_address' => $request->wallet_address,
-            'language' => $request->language ?? 'en',
-            'referrer_id' => $request->referrer_id,
-            'role' => 'user',
-            'status' => 'active',
-        ]);
-
-        // Build referral upline if referrer exists
-        if ($request->referrer_id) {
-            $referrer = User::find($request->referrer_id);
-            if ($referrer) {
-                $referralService = app(ReferralService::class);
-                $referralService->buildReferralUpline($user, $referrer);
-            }
-        }
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect()->route('verification.notice');
     }
 
     /**

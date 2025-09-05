@@ -287,3 +287,4 @@ Your Net On You application with CoinPayments integration is **100% ready for pr
 **Features**: Complete with CoinPayments, Email, Database, Admin Panel
 
 **Next Steps**: Upload, extract, install, configure, and go live! 🚀
+

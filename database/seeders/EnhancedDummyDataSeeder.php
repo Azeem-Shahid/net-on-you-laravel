@@ -675,8 +675,8 @@ class EnhancedDummyDataSeeder extends Seeder
             ['key' => 'commission_rate_level_2', 'value' => '5', 'type' => 'number'],
             ['key' => 'commission_rate_level_3', 'value' => '2', 'type' => 'number'],
             ['key' => 'minimum_payout_amount', 'value' => '50', 'type' => 'number'],
-            ['key' => 'subscription_basic_price', 'value' => '49.99', 'type' => 'number'],
-            ['key' => 'subscription_premium_price', 'value' => '99.99', 'type' => 'number'],
+            ['key' => 'subscription_basic_price', 'value' => '39.90', 'type' => 'number'],
+            ['key' => 'subscription_premium_price', 'value' => '39.90', 'type' => 'number'],
         ];
         
         foreach ($settings as $settingData) {

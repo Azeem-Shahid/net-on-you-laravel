@@ -95,12 +95,12 @@
                                     <span class="text-gray-500 sm:text-sm">$</span>
                                 </div>
                                 <input type="number" id="subscription_price" name="subscription_price" 
-                                       value="{{ \App\Models\Setting::getValue('subscription_price', '9.99') }}" 
+                                       value="{{ \App\Models\Setting::getValue('subscription_price', '39.90') }}" 
                                        step="0.01" min="0"
                                        class="pl-7 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                                        data-setting-key="subscription_price">
                             </div>
-                            <p class="mt-1 text-xs text-gray-500">Monthly subscription price in USD</p>
+                            <p class="mt-1 text-xs text-gray-500">2-year subscription price in USD</p>
                         </div>
                     </div>
                 </div>
