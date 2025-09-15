@@ -1,0 +1,39 @@
+MAGAZINE COVER IMAGE FILES TO UPLOAD TO PRODUCTION
+==================================================
+
+CORE FILES (REQUIRED):
+=====================
+1. app/Http/Controllers/Admin/MagazineController.php
+2. resources/views/admin/magazines/create.blade.php
+3. resources/views/admin/magazines/edit.blade.php
+4. resources/views/admin/magazines/index.blade.php
+5. resources/views/magazines/index.blade.php
+6. resources/views/magazines/show.blade.php
+
+STATIC ASSETS (REQUIRED):
+========================
+7. public/images/magazine-placeholder.svg
+8. public/images/magazine-placeholder.jpg
+
+DATABASE CHANGES:
+================
+- Add column: cover_image_path (VARCHAR 255, nullable) to magazines table
+- SQL: ALTER TABLE magazines ADD COLUMN cover_image_path VARCHAR(255) NULL AFTER mime_type;
+
+STORAGE SETUP:
+=============
+- Create directory: storage/app/public/magazines/covers/
+- Set permissions: chmod 755 storage/app/public/magazines/covers/
+- Run: php artisan storage:link
+
+VERIFICATION:
+============
+- Test admin magazine creation with cover image
+- Test admin magazine editing with cover image
+- Test user-side magazine display
+- Check that placeholder images show when no cover image exists
+
+TOTAL FILES TO UPLOAD: 8 files
+
+
+

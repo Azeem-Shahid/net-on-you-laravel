@@ -120,6 +120,14 @@ class Magazine extends Model
         if (!$this->cover_image_path) {
             return null;
         }
+        
+        // Check if file exists in public/storage directory
+        $publicPath = public_path('storage/' . $this->cover_image_path);
+        if (file_exists($publicPath)) {
+            return asset('storage/' . $this->cover_image_path);
+        }
+        
+        // Fallback to storage disk URL
         return Storage::disk('public')->url($this->cover_image_path);
     }
 
@@ -128,7 +136,7 @@ class Magazine extends Model
      */
     public function getCoverImageUrlOrDefault(): string
     {
-        return $this->getCoverImageUrl() ?? asset('images/magazine-placeholder.jpg');
+        return $this->getCoverImageUrl() ?? asset('images/magazine-placeholder.svg');
     }
 
     /**

@@ -105,7 +105,16 @@ class MagazineController extends Controller
             if ($request->hasFile('cover_image')) {
                 $coverImage = $request->file('cover_image');
                 $coverImageName = time() . '_cover_' . $coverImage->getClientOriginalName();
-                $coverImagePath = $coverImage->storeAs('magazines/covers', $coverImageName, 'public');
+                
+                // Create directory if it doesn't exist
+                $uploadPath = public_path('storage/magazines/covers');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                
+                // Move file to public directory
+                $coverImage->move($uploadPath, $coverImageName);
+                $coverImagePath = 'magazines/covers/' . $coverImageName;
             }
 
             $magazine = Magazine::create([
@@ -212,12 +221,24 @@ class MagazineController extends Controller
         if ($request->hasFile('cover_image')) {
             $coverImage = $request->file('cover_image');
             $coverImageName = time() . '_cover_' . $coverImage->getClientOriginalName();
-            $coverImagePath = $coverImage->storeAs('magazines/covers', $coverImageName, 'public');
+            
+            // Create directory if it doesn't exist
+            $uploadPath = public_path('storage/magazines/covers');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            // Move file to public directory
+            $coverImage->move($uploadPath, $coverImageName);
+            $coverImagePath = 'magazines/covers/' . $coverImageName;
             $validated['cover_image_path'] = $coverImagePath;
 
             // Delete old cover image
-            if ($oldCoverImage && Storage::disk('public')->exists($oldCoverImage)) {
-                Storage::disk('public')->delete($oldCoverImage);
+            if ($oldCoverImage) {
+                $oldImagePath = public_path('storage/' . $oldCoverImage);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
         }
 
@@ -236,10 +257,8 @@ class MagazineController extends Controller
             ]
         );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Magazine updated successfully'
-        ]);
+        return redirect()->route('admin.magazines.index')
+            ->with('success', 'Magazine updated successfully');
     }
 
     /**

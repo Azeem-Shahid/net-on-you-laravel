@@ -95,10 +95,12 @@
                 @foreach($magazines as $magazine)
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
                         <!-- Cover Image -->
-                        <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
+                        <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
                             <img src="{{ $magazine->getCoverImageUrlOrDefault() }}" 
                                  alt="{{ $magazine->title }}"
-                                 class="w-full h-full object-cover">
+                                 class="w-full h-full object-cover object-center">
+                            <!-- Loading placeholder -->
+                            <div class="absolute inset-0 bg-gray-200 animate-pulse hidden" id="loading-{{ $magazine->id }}"></div>
                         </div>
 
                         <!-- Content -->
@@ -185,5 +187,72 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Improved responsive magazine grid */
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Better image centering and loading */
+.magazine-cover {
+    position: relative;
+    overflow: hidden;
+}
+
+.magazine-cover img {
+    transition: opacity 0.3s ease;
+}
+
+.magazine-cover img.loading {
+    opacity: 0.5;
+}
+
+/* Ensure images are properly centered */
+.object-cover {
+    object-position: center;
+}
 </style>
+
+<script>
+// Handle image loading states
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.magazine-cover img');
+    
+    images.forEach(img => {
+        const loadingDiv = document.getElementById('loading-' + img.closest('[id*="loading-"]')?.id.split('-')[1]);
+        
+        img.addEventListener('load', function() {
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+            }
+            this.classList.remove('loading');
+        });
+        
+        img.addEventListener('error', function() {
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+            }
+            // If image fails to load, it will show the placeholder
+        });
+        
+        // Show loading state if image is not cached
+        if (!img.complete) {
+            if (loadingDiv) {
+                loadingDiv.style.display = 'block';
+            }
+            img.classList.add('loading');
+        }
+    });
+});
+</script>
 @endsection

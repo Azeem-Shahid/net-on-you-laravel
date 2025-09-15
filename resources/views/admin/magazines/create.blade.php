@@ -143,6 +143,54 @@
                             <div class="hidden text-sm text-red-600 mt-1" id="magazine_file-error"></div>
                             <p class="text-sm text-gray-600 mt-1">{{ t('pdf_file_requirements', [], 'admin') }}</p>
                         </div>
+
+                        <div>
+                            <label for="cover_image" class="block text-sm font-medium text-gray-700 mb-2">
+                                Cover Image (Thumbnail)
+                            </label>
+                            <input type="file" 
+                                   class="w-full px-3 py-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50" 
+                                   id="cover_image" name="cover_image" accept="image/*"
+                                   title="Select a cover image for your magazine (JPG, PNG, GIF - Max 2MB)">
+                            <div class="hidden text-sm text-red-600 mt-1" id="cover_image-error"></div>
+                            
+                            <!-- Detailed Instructions -->
+                            <div class="mt-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-blue-800">Cover Image Instructions</h3>
+                                        <div class="mt-2 text-sm text-blue-700">
+                                            <ul class="list-disc list-inside space-y-1">
+                                                <li><strong>File Format:</strong> JPG, PNG, or GIF only</li>
+                                                <li><strong>File Size:</strong> Maximum 2MB</li>
+                                                <li><strong>Recommended Size:</strong> 300x400 pixels (3:4 aspect ratio)</li>
+                                                <li><strong>Quality:</strong> High resolution for best display</li>
+                                                <li><strong>Content:</strong> Magazine cover, title, or relevant image</li>
+                                            </ul>
+                                            <p class="mt-2 text-xs text-blue-600">
+                                                <strong>Tip:</strong> The image will be automatically resized to fit the display area while maintaining aspect ratio.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Image Preview -->
+                            <div id="imagePreview" class="mt-3 hidden">
+                                <div class="flex items-center space-x-4">
+                                    <img id="previewImg" src="" alt="Preview" class="w-24 h-32 object-cover rounded-lg border border-gray-300">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Preview</p>
+                                        <p class="text-xs text-gray-500">This is how your cover will appear</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mt-6">
@@ -229,6 +277,68 @@ document.getElementById('language_code').addEventListener('change', function() {
         document.getElementById('new_language').required = false;
     }
 });
+
+// Handle cover image preview
+document.getElementById('cover_image').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    const errorDiv = document.getElementById('cover_image-error');
+    
+    // Reset error state
+    if (errorDiv) {
+        errorDiv.classList.add('hidden');
+        errorDiv.textContent = '';
+    }
+    
+    if (file) {
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            showError('cover_image', 'Please select a valid image file (JPG, PNG, or GIF)');
+            return;
+        }
+        
+        // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+        const maxSize = 2 * 1024 * 1024;
+        if (file.size > maxSize) {
+            showError('cover_image', 'File size must be less than 2MB');
+            return;
+        }
+        
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.classList.remove('hidden');
+            
+            // Show file info
+            const fileInfo = document.createElement('div');
+            fileInfo.className = 'text-xs text-gray-500 mt-1';
+            fileInfo.innerHTML = `File: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+            
+            // Remove existing file info if any
+            const existingInfo = preview.querySelector('.file-info');
+            if (existingInfo) {
+                existingInfo.remove();
+            }
+            
+            fileInfo.className += ' file-info';
+            preview.appendChild(fileInfo);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.classList.add('hidden');
+    }
+});
+
+function showError(fieldId, message) {
+    const errorElement = document.getElementById(fieldId + '-error');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+    }
+}
 
 // Handle form submission
 document.getElementById('magazineForm').addEventListener('submit', function(e) {

@@ -50,10 +50,58 @@
             </div>
         </div>
 
+        <!-- Cover Image Guidelines -->
+        <div class="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-blue-900">Cover Image Guidelines</h3>
+                    <div class="mt-2 text-sm text-blue-800">
+                        <p class="mb-3">For the best magazine display, follow these guidelines when uploading cover images:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-blue-900 mb-2">✅ Recommended:</h4>
+                                <ul class="list-disc list-inside space-y-1 text-sm">
+                                    <li>High-quality magazine covers</li>
+                                    <li>Clear, readable titles</li>
+                                    <li>Good contrast and lighting</li>
+                                    <li>3:4 aspect ratio (300x400px)</li>
+                                    <li>File size under 2MB</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-red-700 mb-2">❌ Avoid:</h4>
+                                <ul class="list-disc list-inside space-y-1 text-sm">
+                                    <li>Blurry or low-resolution images</li>
+                                    <li>Text that's too small to read</li>
+                                    <li>Dark or poorly lit images</li>
+                                    <li>Very wide or very tall images</li>
+                                    <li>Images with watermarks</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Magazines Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($magazines as $magazine)
                 <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <!-- Cover Image -->
+                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative magazine-cover">
+                        <img src="{{ $magazine->getCoverImageUrlOrDefault() }}" 
+                             alt="{{ $magazine->title }}"
+                             class="w-full h-full object-cover object-center">
+                        <!-- Loading placeholder -->
+                        <div class="absolute inset-0 bg-gray-200 animate-pulse hidden" id="loading-{{ $magazine->id }}"></div>
+                    </div>
+                    
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-medium text-gray-900">{{ $magazine->title }}</h3>
