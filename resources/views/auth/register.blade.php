@@ -115,22 +115,50 @@
                     @enderror
                 </div>
 
-                <!-- Referrer ID -->
+                <!-- Referral Code -->
                 <div>
-                    <label for="referrer_id" class="block text-sm font-medium text-white">
-                        {{ t('referrer_id', [], 'auth') }} ({{ t('optional', [], 'common') }})
+                    <label for="referral_code" class="block text-sm font-medium text-white">
+                        {{ t('referral_code', [], 'auth') }}
+                        @if($referralCode ?? request('ref'))
+                            <span class="text-action/80">({{ t('required', [], 'common') }})</span>
+                        @else
+                            <span class="text-white/60">({{ t('optional', [], 'common') }})</span>
+                        @endif
                     </label>
-                    <input id="referrer_id" name="referrer_id" type="text" 
-                           class="mt-1 block w-full px-3 py-3 border @error('referrer_id') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
-                           placeholder="{{ t('enter_referrer_id', [], 'auth') }}"
-                           value="{{ old('referrer_id') ?? request('ref') }}">
-                    @if(request('ref'))
-                        <p class="mt-1 text-xs text-action/80">{{ t('you_were_referred', [], 'auth') }}</p>
+                    
+                    @if($referralCode ?? request('ref'))
+                        <!-- Show referral information -->
+                        <div class="mt-2 p-3 bg-action/10 border border-action/30 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-friends text-action mr-2"></i>
+                                <span class="text-sm text-white/90">{{ t('referred_by', [], 'auth') }}</span>
+                            </div>
+                            @if(isset($referrer) && $referrer)
+                                <p class="mt-1 text-sm text-action font-medium">{{ $referrer->name }}</p>
+                                <p class="text-xs text-white/70">{{ t('referral_code_valid', [], 'auth') }}</p>
+                            @else
+                                <p class="mt-1 text-sm text-danger">{{ t('referral_code_invalid', [], 'auth') }}</p>
+                            @endif
+                        </div>
+                        
+                        <!-- Hidden field for referral code -->
+                        <input id="referral_code" name="referral_code" type="hidden" 
+                               value="{{ old('referral_code') ?? $referralCode ?? request('ref') }}">
+                    @else
+                        <!-- Editable field when no referral link -->
+                        <input id="referral_code" name="referral_code" type="text" 
+                               class="mt-1 block w-full px-3 py-3 border @error('referral_code') border-danger @else border-action/30 @enderror rounded-lg bg-primary text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-action focus:border-transparent transition-all"
+                               placeholder="{{ t('enter_referral_code', [], 'auth') }}"
+                               value="{{ old('referral_code') }}">
+                        <p class="mt-1 text-xs text-white/60">
+                            <i class="fas fa-info-circle mr-1"></i>{{ t('referral_code_format', [], 'auth') }}
+                        </p>
                     @endif
-                    @error('referrer_id')
+                    @error('referral_code')
                         <p class="mt-1 text-sm text-danger">{{ $message }}</p>
                     @enderror
                 </div>
+
             </div>
 
             <div>

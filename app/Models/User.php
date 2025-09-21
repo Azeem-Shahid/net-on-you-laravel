@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\EmailVerificationNotification;
+use App\Notifications\PasswordResetNotification;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -20,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'referrer_id',
+        'referral_code',
         'name',
         'email',
         'password',
@@ -141,8 +144,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasDirectSalesInMonth(string $month): bool
     {
-        return $this->directReferrals()
-            ->whereHas('referredUser.transactions', function($query) use ($month) {
+        return $this->referrals()
+            ->whereHas('transactions', function($query) use ($month) {
                 $query->where('status', 'completed')
                       ->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$month]);
             })
@@ -154,6 +157,17 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getCommissionEligibility(string $month): string
     {
+        // Founder (User ID 1) always has special access - no sales requirements
+        if ($this->id === 1) {
+            return 'eligible';
+        }
+        
+        // Direct referrals of founder must meet sales requirements
+        if ($this->referrer_id === 1) {
+            return $this->hasDirectSalesInMonth($month) ? 'eligible' : 'ineligible';
+        }
+        
+        // All other users must meet sales requirements
         return $this->hasDirectSalesInMonth($month) ? 'eligible' : 'ineligible';
     }
 
@@ -334,6 +348,40 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Check if user has made any completed payments
+     */
+    public function hasPaid(): bool
+    {
+        return $this->transactions()
+            ->where('status', 'completed')
+            ->exists();
+    }
+
+    /**
+     * Check if user has active payment status (has paid and has active subscription)
+     */
+    public function hasActivePaymentStatus(): bool
+    {
+        return $this->hasPaid() && $this->hasActiveSubscription();
+    }
+
+    /**
+     * Get payment status for referral display
+     */
+    public function getPaymentStatus(): string
+    {
+        if ($this->hasActiveSubscription()) {
+            return 'active';
+        }
+        
+        if ($this->hasPaid()) {
+            return 'expired';
+        }
+        
+        return 'unpaid';
+    }
+
+    /**
      * Get days until subscription expires
      */
     public function getDaysUntilExpiry(): int
@@ -360,10 +408,175 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Generate referral link
+     * Generate referral link using referral code
      */
     public function getReferralLink(): string
     {
-        return url('/register?ref=' . $this->id);
+        return url('/register?ref=' . urlencode($this->referral_code));
+    }
+
+    /**
+     * Get a shorter referral link for sharing
+     */
+    public function getShortReferralLink(): string
+    {
+        return url('/ref/' . $this->referral_code);
+    }
+
+    /**
+     * Validate referral code format
+     */
+    public static function isValidReferralCodeFormat(string $code): bool
+    {
+        // Pattern: REF-{USERNAME}-{RANDOM}
+        return preg_match('/^REF-[A-Z0-9]{3,6}-[A-Z0-9]{4}$/', $code) === 1;
+    }
+
+    /**
+     * Generate a unique referral code for the user with special pattern
+     * Pattern: REF-{USERNAME}-{RANDOM}
+     */
+    public function generateReferralCode(): string
+    {
+        // Clean username for code generation
+        $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $this->name));
+        $username = substr($username, 0, 6); // Limit to 6 characters for better pattern
+        
+        // If username is too short, use first 3 characters of email
+        if (strlen($username) < 3) {
+            $emailParts = explode('@', $this->email);
+            $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $emailParts[0]));
+            $username = substr($username, 0, 6);
+        }
+        
+        // Ensure minimum length
+        if (strlen($username) < 3) {
+            $username = 'USER' . substr($this->id, 0, 3);
+        }
+        
+        $username = strtoupper($username);
+        
+        // Generate code with pattern: REF-{USERNAME}-{RANDOM}
+        do {
+            $randomSuffix = strtoupper(substr(md5($this->id . time() . rand()), 0, 4));
+            $code = "REF-{$username}-{$randomSuffix}";
+        } while ($this->referralCodeExists($code));
+        
+        return $code;
+    }
+
+    /**
+     * Check if referral code already exists
+     */
+    private function referralCodeExists(string $code): bool
+    {
+        return static::where('referral_code', $code)->where('id', '!=', $this->id)->exists();
+    }
+
+    /**
+     * Find user by referral code with validation
+     */
+    public static function findByReferralCode(string $referralCode): ?User
+    {
+        // Validate format first
+        if (!static::isValidReferralCodeFormat($referralCode)) {
+            return null;
+        }
+        
+        return static::where('referral_code', $referralCode)->first();
+    }
+
+    /**
+     * Find user by referral code (legacy support for old format)
+     */
+    public static function findByReferralCodeLegacy(string $referralCode): ?User
+    {
+        return static::where('referral_code', $referralCode)->first();
+    }
+
+    /**
+     * Boot method to auto-generate referral code
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($user) {
+            if (empty($user->referral_code)) {
+                $user->referral_code = $user->generateReferralCode();
+            }
+        });
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        \Log::info('=== USER SEND EMAIL VERIFICATION NOTIFICATION START ===', [
+            'user_id' => $this->id,
+            'email' => $this->email,
+            'timestamp' => now()
+        ]);
+
+        try {
+            $this->notify(new EmailVerificationNotification);
+            
+            \Log::info('Email verification notification sent successfully', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'timestamp' => now()
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to send email verification notification', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'timestamp' => now()
+            ]);
+            
+            throw $e;
+        }
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        \Log::info('=== USER SEND PASSWORD RESET NOTIFICATION START ===', [
+            'user_id' => $this->id,
+            'email' => $this->email,
+            'token' => $token,
+            'timestamp' => now()
+        ]);
+
+        try {
+            $this->notify(new PasswordResetNotification($token));
+            
+            \Log::info('Password reset notification sent successfully', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'token' => $token,
+                'timestamp' => now()
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to send password reset notification', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'token' => $token,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'timestamp' => now()
+            ]);
+            
+            throw $e;
+        }
     }
 }

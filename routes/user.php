@@ -41,23 +41,18 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.update');
+    
+    // Short referral link route
+    Route::get('/ref/{referralCode}', [AuthController::class, 'showRegistrationForm'])->name('register.ref');
 });
 
 // Email Verification Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    })->name('verification.notice');
+    Route::get('/email/verify', [AuthController::class, 'showEmailVerificationNotice'])->name('verification.notice');
 
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
-        return redirect('/dashboard');
-    })->middleware(['signed'])->name('verification.verify');
+    Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware(['signed'])->name('verification.verify');
 
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Verification link sent!');
-    })->middleware(['throttle:6,1'])->name('verification.send');
+    Route::post('/email/verification-notification', [AuthController::class, 'resendEmailVerification'])->middleware(['throttle:6,1'])->name('verification.send');
     
     // Logout route - accessible to all authenticated users (verified or not)
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
